@@ -6,9 +6,9 @@ void main() {
 }
 
 void helloWorld() {
-   printf("asworld");
+   printf("asdfdfworld");
 }
 
 void helloWorld() {
-   printf("asworld");
+   printf("aswofrld");
 }
