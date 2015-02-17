@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 test
 
 New Test
+=======
+asdftest
+
+sfdlkjsd
+>>>>>>> origin/master
