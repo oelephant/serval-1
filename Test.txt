@@ -6,5 +6,5 @@ void main() {
 }
 
 void helloWorld() {
-   printf("asdfhellow sdfworld");
+   printf("asworld");
 }
