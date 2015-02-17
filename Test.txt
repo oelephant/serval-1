@@ -6,7 +6,7 @@ void main() {
 }
 
 void helloWorld() {
-   printf("asdfhellow sdfworld");
+   printf("asworld");
 }
 
 void function2() {
