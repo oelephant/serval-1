@@ -12,3 +12,9 @@ void helloWorld() {
 void helloWorld() {
    printf("aswofrld");
 }
+
+void function2() {
+   // I added this
+}
+
+
