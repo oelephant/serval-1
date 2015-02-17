@@ -8,3 +8,7 @@ void main() {
 void helloWorld() {
    printf("asworld");
 }
+
+void helloWorld() {
+   printf("asworld");
+}
