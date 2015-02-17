@@ -1,6 +1,1 @@
-A New Test
-adad
-=======
-asdfA New Test
-asdf
->>>>>>> origin/master
+ABC123
