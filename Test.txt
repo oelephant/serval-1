@@ -8,3 +8,6 @@ void main() {
 void helloWorld() {
    printf("asdfhellow sdfworld");
 }
+
+void function2() {
+}
