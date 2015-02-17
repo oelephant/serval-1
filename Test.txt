@@ -2,8 +2,12 @@
 
 void main() {
    helloworld();
+   anotherFunction();
 }
 
 void helloWorld() {
    printf("hellow world");
+}
+
+void anotherFunction() {
 }
