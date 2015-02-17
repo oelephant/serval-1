@@ -6,12 +6,9 @@ void main() {
 }
 
 void helloWorld() {
-<<<<<<< HEAD
    printf("hellow world");
 }
 
 void anotherFunction() {
-=======
    printf("helloaaaaw world");
->>>>>>> origin/master
 }
