@@ -1,0 +1,17 @@
+\t (00:00:28) allegro 16.6 S026 (v16-6-112BY) Windows 32
+\t (00:00:28)     Journal start - Fri Mar 06 16:27:01 2015
+\t (00:00:28)         Host=TAERSX User=Tae Pid=5036 CPUs=2
+\t (00:00:28) CmdLine= C:\OrCAD\OrCAD_16.6_Lite\tools\pcb\bin\allegro.exe -orcad
+\t (00:00:28) 
+\d (00:00:28) Design opened: C:/Users/Tae/Documents/School_Docs/8Senior/ceen4990/serval/hw/controller3.brd
+\i (00:00:29) generaledit 
+\i (00:00:42) roam y -96 
+\i (00:00:42) roam y -96
+\i (00:00:42) roam y -96 
+\i (00:00:42) roam y -96
+\i (00:00:42) roam y -96 
+\i (00:00:42) roam y -96
+\i (00:00:43) roam y 96 
+\i (00:00:43) roam y 96
+\i (00:00:52) exit 
+\t (00:00:53)     Journal end - Fri Mar 06 16:27:26 2015
