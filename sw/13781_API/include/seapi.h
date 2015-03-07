@@ -1,0 +1,20 @@
+//////////////////////////////////////////////////////////////////////////////
+//	
+// This file contains all the headers required for the API.
+//
+//////////////////////////////////////////////////////////////////////////////
+
+
+#ifndef seSEAPI_H_INCLUDED
+#define seSEAPI_H_INCLUDED
+
+
+#include "hcl.h"
+#include "display.h"
+#include "pip.h"
+#include "clock.h"
+#include "os.h"
+
+// ...
+
+#endif	// seSEAPI_H_INCLUDED
