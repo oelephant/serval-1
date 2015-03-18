@@ -26,7 +26,7 @@
 
 // CONFIG3
 #pragma config WPFP = WPFP255           // Write Protection Flash Page Segment Boundary (Highest Page (same as page 85))
-#pragma config SOSCSEL = SOSC           // Secondary Oscillator Power Mode Select (Secondary oscillator is in Default (high drive strength) Oscillator mode)
+#pragma config SOSCSEL = EC             // Secondary Oscillator Power Mode Select (External clock (SCLKI) or Digital I/O mode()
 #pragma config WUTSEL = LEG             // Voltage Regulator Wake-up Time Select (Default regulator start-up time is used)
 #pragma config ALTPMP = ALPMPDIS        // Alternate PMP Pin Mapping (EPMP pins are in default location mode)
 #pragma config WPDIS = WPDIS            // Segment Write Protection Disable (Segmented code protection is disabled)
@@ -38,7 +38,7 @@
 #pragma config IOL1WAY = ON             // IOLOCK One-Way Set Enable (The IOLOCK bit (OSCCON<6>) can be set once, provided the unlock sequence has been completed. Once set, the Peripheral Pin Select registers cannot be written to a second time.)
 #pragma config OSCIOFNC = OFF           // OSCO Pin Configuration (OSCO/CLKO/RC15 functions as CLKO (FOSC/2))
 #pragma config FCKSM = CSDCMD           // Clock Switching and Fail-Safe Clock Monitor (Clock switching and Fail-Safe Clock Monitor are disabled)
-#pragma config FNOSC = FRCDIV           // Initial Oscillator Select (Fast RC Oscillator with Postscaler (FRCDIV))
+#pragma config FNOSC = PRIPLL           // Initial Oscillator Select (Primary Oscillator with PLL module (XTPLL, HSPLL, ECPLL))
 #pragma config PLL96MHZ = ON            // 96MHz PLL Startup Select (96 MHz PLL is enabled automatically on start-up)
 #pragma config PLLDIV = DIV2            // 96 MHz PLL Prescaler Select (Oscillator input is divided by 2 (8 MHz input))
 #pragma config IESO = ON                // Internal External Switchover (IESO mode (Two-Speed Start-up) is enabled)
@@ -48,7 +48,7 @@
 #pragma config FWPSA = PR128            // WDT Prescaler (Prescaler ratio of 1:128)
 #pragma config WINDIS = OFF             // Windowed WDT (Standard Watchdog Timer enabled,(Windowed-mode is disabled))
 #pragma config FWDTEN = OFF             // Watchdog Timer (Watchdog Timer is disabled)
-#pragma config ICS = PGx2               // Emulator Pin Placement Select bits (Emulator functions are shared with PGEC2/PGED2)
+#pragma config ICS = PGx3               // Emulator Pin Placement Select bits (Emulator functions are shared with PGEC3/PGED3)
 #pragma config GWRP = OFF               // General Segment Write Protect (Writes to program memory are allowed)
 #pragma config GCP = OFF                // General Segment Code Protect (Code protection is disabled)
 #pragma config JTAGEN = ON              // JTAG Port Enable (JTAG port is enabled)
