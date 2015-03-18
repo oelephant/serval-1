@@ -72,6 +72,16 @@
       (DisplayName "pstchip.dat")))
   (Folder "Referenced Projects")
   (PartMRUSelector
+    (MC1700
+      (FullPartName "MC1700.Normal")
+      (LibraryName
+         "C:\USERS\PKI340\DOWNLOADS\HARDWARE\LIBRARY\SERVAL_TOUCHSCREEN_REV.OLB")
+      (DeviceIndex "0"))
+    (LD1086
+      (FullPartName "LD1086.Normal")
+      (LibraryName
+         "C:\USERS\PKI340\DOWNLOADS\HARDWARE\LIBRARY\SERVAL_TOUCHSCREEN_REV.OLB")
+      (DeviceIndex "0"))
     (OFFPAGELEFT-L
       (LibraryName "C:\CADENCE\SPB_16.2\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
       (DeviceIndex "0"))
@@ -163,50 +173,98 @@
       (DeviceIndex "0"))
     (0
       (LibraryName "C:\ORCAD\ORCAD_16.2\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
-      (DeviceIndex "0"))
-    (GND_POWER
-      (LibraryName "C:\ORCAD\ORCAD_16.2\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
-      (DeviceIndex "0"))
-    (PIC18f46j50
-      (FullPartName "PIC18f46j50.Normal")
-      (LibraryName "J:\1 SPRING 2015\SERVAL\LIBRARY\LIBRARY1.OLB")
       (DeviceIndex "0")))
   (GlobalState
     (FileView
       (Path "Design Resources")
-      (Path "Design Resources"
-         "C:\Users\PKI312\OneDrive\Hardware\Table touch Rev\serval.dsn")
-      (Path "Design Resources"
-         "C:\Users\PKI312\OneDrive\Hardware\Table touch Rev\serval.dsn"
-         "SCHEMATIC1")
+      (Path "Design Resources" ".\serval.dsn")
+      (Path "Design Resources" ".\serval.dsn" "SCHEMATIC1")
       (Path "Design Resources" "Library")
-      (Path "Outputs"))
+      (Path "Outputs")
+      (Select "Design Resources" ".\serval.dsn" "SCHEMATIC1" "Touch Screen"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
-        (Placement "44 2 3 -1 -1 -8 -30 0 200 0 186"))
+        (Placement "44 0 1 -1 -1 -8 -30 0 200 0 186"))
       (Tab 0))
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -30 25 997 25 228")
-        (Scroll "0 0")
+        (Placement "44 0 1 -1 -1 -8 -30 0 1021 0 356")
+        (Scroll "-1 0")
         (Zoom "100")
         (Occurrence "/"))
-      (Path "C:\USERS\PKI312\ONEDRIVE\HARDWARE\TABLE TOUCH REV\SERVAL.DSN")
+      (Path
+         "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\SERVAL.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "AR1020 CONTROLLER"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 25 1046 25 381")
+        (Scroll "-1 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\SERVAL.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "Bypass and Test"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 50 1071 50 406")
+        (Scroll "-1 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\SERVAL.DSN")
       (Schematic "SCHEMATIC1")
       (Page "Communication"))
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -30 0 904 0 203")
-        (Scroll "0 370")
+        (Placement "44 0 1 -1 -1 -8 -30 75 1096 75 431")
+        (Scroll "-1 0")
         (Zoom "100")
         (Occurrence "/"))
-      (Path "C:\USERS\PKI312\ONEDRIVE\HARDWARE\TABLE TOUCH REV\SERVAL.DSN")
+      (Path
+         "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\SERVAL.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "LCD back light LED power supply"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 100 1121 100 456")
+        (Scroll "-1 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\SERVAL.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "PIC Microcontroller"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 125 1146 125 481")
+        (Scroll "-1 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\SERVAL.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "Power"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -8 -30 150 1171 150 506")
+        (Scroll "-84 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\SERVAL.DSN")
       (Schematic "SCHEMATIC1")
       (Page "Touch Screen")))
-  (MPSSessionName "PKI312")
+  (MPSSessionName "Tae")
   (LastUsedLibraryBrowseDirectory "C:\Cadence\SPB_16.2\tools\capture\library")
   (ISPCBBASICLICENSE "false"))

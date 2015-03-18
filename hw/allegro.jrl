@@ -1,0 +1,20 @@
+\t (00:00:06) allegro 16.6 S026 (v16-6-112BY) Windows 32
+\t (00:00:06)     Journal start - Tue Mar 17 16:21:31 2015
+\t (00:00:06)         Host=TAERSX User=Tae Pid=5000 CPUs=2
+\t (00:00:06) CmdLine= C:\OrCAD\OrCAD_16.6_Lite\tools\pcb\bin\allegro.exe -orcad
+\t (00:00:06) 
+\t (00:00:07) Starting new design...
+\i (00:00:07) trapsize 1051
+\i (00:00:07) trapsize 1020
+\i (00:00:07) trapsize 1056
+\i (00:00:08) trapsize 868
+\i (00:00:08) trapsize 1589
+\i (00:00:09) generaledit 
+\i (00:01:33) open 
+\i (00:01:37) fillin "C:\Users\Tae\Documents\School_Docs\8Senior\ceen4990\serval\hw\controller\controller3.brd"
+\i (00:01:37) cd "C:\Users\Tae\Documents\School_Docs\8Senior\ceen4990\serval\hw\controller"
+\t (00:01:37) Opening existing design...
+\i (00:01:39) fillin yes 
+\t (00:01:39) Grids are drawn 16.00, 16.00 apart for enhanced viewability.
+\i (00:01:39) trapsize 1205
+\t (00:01:39)     Journal end - Tue Mar 17 16:23:05 2015

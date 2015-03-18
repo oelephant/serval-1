@@ -131,7 +131,7 @@
       (Path "Design Resources" ".\controller.dsn" "SCHEMATIC1")
       (Path "Design Resources" "Library")
       (Path "Outputs")
-      (Select "Design Resources" ".\controller.dsn" "SCHEMATIC1" "InputOutput"))
+      (Select "Design Resources" ".\controller.dsn" "SCHEMATIC1" "Power"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
@@ -142,18 +142,7 @@
       (Type "COrSchematicDoc")
       (Frame
         (Placement "44 0 1 -1 -1 -8 -30 50 1071 50 406")
-        (Scroll "-1 137")
-        (Zoom "100")
-        (Occurrence "/"))
-      (Path
-         "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\CONTROLLER.DSN")
-      (Schematic "SCHEMATIC1")
-      (Page "Controller"))
-    (Doc
-      (Type "COrSchematicDoc")
-      (Frame
-        (Placement "44 2 3 -1 -1 -8 -30 100 1121 100 456")
-        (Scroll "-84 0")
+        (Scroll "-1 0")
         (Zoom "100")
         (Occurrence "/"))
       (Path
@@ -163,14 +152,36 @@
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -30 125 1146 125 481")
-        (Scroll "-1 37")
+        (Placement "44 0 1 -1 -1 -8 -30 75 1096 75 431")
+        (Scroll "-1 0")
         (Zoom "100")
         (Occurrence "/"))
       (Path
          "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\CONTROLLER.DSN")
       (Schematic "SCHEMATIC1")
-      (Page "InputOutput")))
+      (Page "Controller"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 100 1121 100 456")
+        (Scroll "-1 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\CONTROLLER.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "InputOutput"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 125 1146 125 481")
+        (Scroll "-1 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "C:\USERS\TAE\DOCUMENTS\SCHOOL_DOCS\8SENIOR\CEEN4990\SERVAL\HW\CONTROLLER.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "Power")))
   (LastUsedLibraryBrowseDirectory "C:\OrCAD\OrCAD_16.2\tools\capture\library")
   (MPSSessionName "Tae")
   (ISPCBBASICLICENSE "false"))
