@@ -29,10 +29,7 @@ int16_t main(void)
     InitApp();
 
     glcd_init();
-    glcd_config_registers();
-    ANSBbits.ANSB7 = 0;     // spi_int_toc as digital io
-    TRISBbits.TRISB7 = 1;   // spi_int_toc as input
-    TRISDbits.TRISD0 = 1;   // spi_miso as input
+    //glcd_config_registers();
 
     //glcd_openGraphic();
     glcd_openTouch();
@@ -40,9 +37,10 @@ int16_t main(void)
     {
         //glcd_writePixel(0x5FFFF, 87, 112, 210);
         //glcd_writePixel(0x4FFFF, 87, 112, 210);
-        //glcd_readTouch();
+        //glcd_readGraphic(1);
+        glcd_readTouch();
         if (spi_int_toc == 1){
-           glcd_readTouch();
+            //glcd_readTouch();
             //glcd_openGraphic();
         }
     }

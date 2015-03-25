@@ -1,17 +1,10 @@
-// Notes:
-// Max graphic SPI freq: 33 MHz / period 30 ns
-// Max touch SPI 900 kHz
-#define USE_AND_OR
-
-#include <PPS.h>
 #include <spi.h>
 #include <xc.h>
-#include "system.h"        /* System funct/params, like osc/peripheral config */
 #include <libpic30.h>   // for delays
-#include "glcd.h"
 
-#define spi_ss_toc LATBbits.LATB6
-#define spi_ss_lcd LATDbits.LATD9
+#include "glcd.h"
+#include "system.h"        /* System funct/params, like osc/peripheral config */
+#include "uc_pins.h"
 
 UINT graphic_SPICON1Value;
 UINT graphic_SPICON2Value;
@@ -60,10 +53,12 @@ void glcd_getTouch(void){
 
 // Configures reprogrammable pins and values for SPI config
 void glcd_init(void){
+    /*
     TRISBbits.TRISB6 = 0;   // spi_ss_toc as output
     TRISDbits.TRISD9 = 0;   // spi_ss_lcd as output
     spi_ss_toc = 1; // disable
     spi_ss_lcd = 1; // disable
+     */
 
     // SPI config for the graphics controller
     graphic_SPICON1Value = ENABLE_SCK_PIN | ENABLE_SDO_PIN | SPI_MODE8_ON
@@ -78,11 +73,6 @@ void glcd_init(void){
             | CLK_POL_ACTIVE_HIGH | MASTER_ENABLE_ON | SEC_PRESCAL_2_1 ;
     touch_SPICON2Value = 0x00;
     touch_SPISTATValue = SPI_ENABLE;
-
-    // Remap pins
-    iPPSInput(IN_FN_PPS_SDI1, IN_PIN_PPS_RP11);      // remap SDI1 to spi_miso
-    iPPSOutput(OUT_PIN_PPS_RP12, OUT_FN_PPS_SDO1);      // remap SDO1 to spi_mosi
-    iPPSOutput(OUT_PIN_PPS_RP3, OUT_FN_PPS_SCK1OUT);    // remap SCK1 to spi_sclk
 }
 
 // Opens SPI for graphic controller
@@ -101,40 +91,34 @@ void glcd_openTouch(){
     OpenSPI1(touch_SPICON1Value,touch_SPICON2Value,touch_SPISTATValue );
 }
 
+unsigned int glcd_readGraphic(uint32_t addr){
+    glcd_writeGraphic(0b11000000);    // 8-bit read
+    //60802
+
+    // address. registers start at 0x60800
+    glcd_writeGraphic(0x6); // bits 18..16
+    glcd_writeGraphic(0x08); // bits 15..8
+    glcd_writeGraphic(0x02); // bits 7..0
+    glcd_writeGraphic(0x00); // bits 7..0
+    glcd_writeGraphic(0x00); // bits 7..0
+    glcd_writeGraphic(0x00); // bits 7..0
+
+
+    return 1;
+}
+
 unsigned int glcd_readTouch(void){
-    unsigned int a,b,c,d,e;
-    //unsigned int *packet;
+    unsigned int a,b;
     if (SPI1_Rx_Buf_Full){
         b = SPI1BUF;
     }
     spi_ss_toc = 0;
-    WriteSPI1(0x00);   // send dummy byte
+    //__delay_ms(1);
+    WriteSPI1(0xEE);   // send dummy byte
     while(SPI1_Tx_Buf_Full);  //wait till completion of transmission
-
-//    WriteSPI1(0x55);   // send dummy byte
-//    while(SPI1_Tx_Buf_Full);  //wait till completion of transmission
-//    __delay_us(400);
-//    WriteSPI1(0x01);   // send dummy byte
-//    while(SPI1_Tx_Buf_Full);  //wait till completion of transmission
-//    __delay_us(400);
-//    WriteSPI1(0x10);   // send dummy byte
-//    while(SPI1_Tx_Buf_Full);  //wait till completion of transmission
-//    __delay_us(400);
-//    WriteSPI1(0xFF);   // send dummy byte
-//    while(SPI1_Tx_Buf_Full);  //wait till completion of transmission
-//    __delay_us(400);
-//    WriteSPI1(0xFF);   // send dummy byte
-//    while(SPI1_Tx_Buf_Full);  //wait till completion of transmission
-//    __delay_us(400);
 
     while (! SPI1_Rx_Buf_Full);
     a = ReadSPI1();
-    spi_ss_toc = 1;
-//    b = ReadSPI1();
-//    c = ReadSPI1();
-//    d = ReadSPI1();
-//    e = ReadSPI1();
-    //getsSPI1(5, packet, 1000);
     return 1;
 }
 
@@ -143,7 +127,7 @@ void glcd_writeGraphic(uint8_t val){
     spi_ss_lcd = 0; // enable
     WriteSPI1((unsigned int)val); //write data to buffer
     while(SPI1_Tx_Buf_Full);  //wait till completion of transmission
-    spi_ss_lcd = 1; // disable
+    //spi_ss_lcd = 1; // disable
 }
 
 void glcd_writePixel(uint32_t addr, uint8_t r, uint8_t g, uint8_t b){
