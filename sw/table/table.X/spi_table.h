@@ -10,7 +10,9 @@
 
 #include <stdint.h>
 
-uint8_t spi_exchange(uint8_t dataOut);
+enum spi_deviceSelect{GRAPHIC, MEM, TOUCH, WIFI};
+
+uint8_t spi_exchange(int channel, uint8_t dataOut);
 void spi_init(void);
 void spi_open(unsigned int mode);
 

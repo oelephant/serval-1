@@ -41,8 +41,13 @@ void InitApp(void)
     TRISDbits.TRISD0 = 1;   // spi_miso as input
 */
     /* Initialize peripherals */
-    //iPPSInput(IN_FN_PPS_SDI1, IN_PIN_PPS_RP11);      // remap SDI1 to spi_miso
-    iPPSOutput(OUT_PIN_PPS_RP12, OUT_FN_PPS_SDO1);      // remap SDO1 to spi_mosi
-    iPPSOutput(OUT_PIN_PPS_RP3, OUT_FN_PPS_SCK1OUT);    // remap SCK1 to spi_sclk
+    /* SPI1 for graphic controller */
+    iPPSInput(IN_FN_PPS_SDI1, IN_PIN_PPS_RP11);      // remap SDI1 to spi1_miso
+    iPPSOutput(OUT_PIN_PPS_RP12, OUT_FN_PPS_SDO1);      // remap SDO1 to spi1_mosi
+    iPPSOutput(OUT_PIN_PPS_RP3, OUT_FN_PPS_SCK1OUT);    // remap SCK1 to spi1_sclk
+    /* SPI2 for WiFi, touch controller */
+    iPPSInput(IN_FN_PPS_SDI2, IN_PIN_PPS_RP20);      // remap SDI2 to spi2_miso
+    iPPSOutput(OUT_PIN_PPS_RP25, OUT_FN_PPS_SDO2);      // remap SDO2 to spi2_mosi
+    iPPSOutput(OUT_PIN_PPS_RP22, OUT_FN_PPS_SCK2OUT);    // remap SCK2 to spi2_sclk
 }
 
