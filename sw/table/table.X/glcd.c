@@ -66,7 +66,7 @@ unsigned int glcd_readGraphic(uint32_t addr){
     // address. VRAM from 0x00000 to 0x5FFFF
     spi_exchange(DEVICE, 0x06); // bits 18..16
     spi_exchange(DEVICE, 0x08); // bits 15..8
-    spi_exchange(DEVICE, 0x02); // bits 7..0
+    spi_exchange(DEVICE, 0x14); // bits 7..0
 
     // data.
     spi_exchange(DEVICE, DUMMY);
