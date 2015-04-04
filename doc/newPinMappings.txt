@@ -1,6 +1,0 @@
-graphic on spi1
-
-others on spi2
-51	clk
-52	mosi
-53	miso

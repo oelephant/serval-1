@@ -20,7 +20,8 @@
 #define spi_ss_toc_dir TRISBbits.TRISB6
 #define spi_ss_toc LATBbits.LATB6
 
-#define spi_miso_dir TRISDbits.TRISD0
+#define spi_ss_wifi_dir TRISDbits.TRISD1
+#define spi_ss_wifi LATDbits.LATD1
 
 #endif	/* UC_PINS_H */
 

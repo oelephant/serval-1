@@ -16,6 +16,7 @@ void glcd_configRegisters(void);
 int glcd_getTouch(void);
 void glcd_init(void);
 unsigned int glcd_readGraphic(uint32_t addr);
+int glcd_readRegisters(void);
 void glcd_writePixel(uint32_t addr, uint8_t r, uint8_t g, uint8_t b);
 void glcd_writeConfig(uint8_t addr_offset, uint16_t val);
 

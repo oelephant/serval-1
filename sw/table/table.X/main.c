@@ -7,7 +7,6 @@
     #include <xc.h>
 #endif
 
-#include <libpic30.h>   // for delays
 #include <stdint.h>        /* Includes uint16_t definition                    */
 #include <stdbool.h>       /* Includes true/false definition                  */
 
@@ -15,6 +14,9 @@
 #include "user.h"          /* User funct/params, such as InitApp              */
 #include "glcd.h"
 #include "spi_table.h"
+#include "uc_pins.h"
+
+#include <libpic30.h>   // for delays
 
 /******************************************************************************/
 /* Main Program                                                               */
@@ -22,7 +24,7 @@
 
 int16_t main(void)
 {
-    int temp;
+    uint32_t i = 0;
     /* Configure the oscillator for the device */
     ConfigureOscillator();
 
@@ -32,12 +34,16 @@ int16_t main(void)
     spi_init();
     glcd_init();
 
-            spi_open(TOUCH);
+    spi_open(TOUCH);
     while(1)
     {
         //temp = glcd_readGraphic(0x2C);
-        glcd_writePixel(0x3FFFF, 176, 0, 0);
-        glcd_writePixel(0x4FFFF, 138, 43, 226);
+        glcd_writePixel(i, 176, 0, 0);
+        glcd_writePixel(i + 1, 138, 43, 226);
+        i += 2;
+        if (i > 0x5FFFF){
+            i = 0;
+        }
         //glcd_writePixel(0x4FFFF, 87, 112, 210);
         if (spi_int_toc == 1){
             glcd_getTouch();
