@@ -9,29 +9,54 @@
 
 // Configures all the registers for the GLCD
 void glcd_configRegisters(void){
-    spi_open(GRAPHIC);
-    glcd_writeConfig(0x06, 0x0100);  // software reset
-    glcd_writeConfig(0x04, 0x0000);  // power save config
-    glcd_writeConfig(0x10, 0x0000);  // pll setting 0
-    glcd_writeConfig(0x12, 0x0007);  // pll setting 1
-    glcd_writeConfig(0x14, 0x0013);  // pll setting 2
-    glcd_writeConfig(0x16, 0x0001);  // internal clock config
-    glcd_writeConfig(0x10, 0x0001);  // pll setting 0
-    glcd_writeConfig(0x04, 0x0001);  // power save config
-    glcd_writeConfig(0x20, 0x004F);  // panel setting misc
-    glcd_writeConfig(0x22, 0x0001);  // display setting
-    glcd_writeConfig(0x24, 0x0050);  // HDSIP
-    glcd_writeConfig(0x26, 0x007F);  // NDSP
-    glcd_writeConfig(0x28, 0x01E0);  // VDISP
-    glcd_writeConfig(0x2A, 0x002D);  // VNDP
-    glcd_writeConfig(0x2C, 0x0080);  // HS pulse width
-    glcd_writeConfig(0x2E, 0x00CC);  // HPS
-    glcd_writeConfig(0x30, 0x0080);  // VSW
-    glcd_writeConfig(0x32, 0x000D);  // VPS
-    glcd_writeConfig(0x40, 0x0000);  // main layer setting
-    glcd_writeConfig(0x42, 0x0000);  // main layer start addr 0
-    glcd_writeConfig(0x44, 0x0000);  // main layer start addr 1
-    glcd_writeConfig(0x04, 0x0002);  // power save config
+    glcd_writeRegister(0x06, 0x0100);  // software reset
+    glcd_writeRegister(0x04, 0x0000);  // power save config
+    glcd_writeRegister(0x10, 0x0000);  // pll setting 0
+    glcd_writeRegister(0x12, 0x0007);  // pll setting 1
+    glcd_writeRegister(0x14, 0x0013);  // pll setting 2
+    glcd_writeRegister(0x16, 0x0001);  // internal clock config
+    glcd_writeRegister(0x10, 0x0001);  // pll setting 0
+    glcd_writeRegister(0x04, 0x0001);  // power save config
+
+    glcd_writeRegister(0x20, 0x004F);  // panel setting misc
+    glcd_writeRegister(0x22, 0x0001);  // display setting
+    glcd_writeRegister(0x24, 0x0064);  // HDSIP
+    glcd_writeRegister(0x26, 0x007F);  // NDSP
+    glcd_writeRegister(0x28, 0x01E0);  // VDISP
+    glcd_writeRegister(0x2A, 0x002D);  // VNDP
+    glcd_writeRegister(0x2C, 0x00A0);  // HS pulse width
+    glcd_writeRegister(0x2E, 0x0008);  // HPS
+    glcd_writeRegister(0x30, 0x0083);  // VSW
+    glcd_writeRegister(0x32, 0x000A);  // VPS
+    glcd_writeRegister(0x40, 0x0006);  // main layer setting
+    glcd_writeRegister(0x42, 0x0000);  // main layer start addr 0
+    glcd_writeRegister(0x44, 0x0000);  // main layer start addr 1
+    glcd_writeRegister(0x04, 0x0002);  // power save config
+
+    /*
+    glcd_writeRegister(0x06, 0x0100);  // software reset
+    glcd_writeRegister(0x04, 0x0000);  // power save config
+    glcd_writeRegister(0x10, 0x0000);  // pll setting 0
+    glcd_writeRegister(0x12, 0x0007);  // pll setting 1
+    glcd_writeRegister(0x14, 0x0013);  // pll setting 2
+    glcd_writeRegister(0x16, 0x0001);  // internal clock config
+    glcd_writeRegister(0x10, 0x0001);  // pll setting 0
+    glcd_writeRegister(0x04, 0x0001);  // power save config
+    glcd_writeRegister(0x20, 0x004F);  // panel setting misc
+    glcd_writeRegister(0x22, 0x0001);  // display setting
+    glcd_writeRegister(0x24, 0x0050);  // HDSIP
+    glcd_writeRegister(0x26, 0x007F);  // NDSP
+    glcd_writeRegister(0x28, 0x01E0);  // VDISP
+    glcd_writeRegister(0x2A, 0x002D);  // VNDP
+    glcd_writeRegister(0x2C, 0x0080);  // HS pulse width
+    glcd_writeRegister(0x2E, 0x00CC);  // HPS
+    glcd_writeRegister(0x30, 0x0080);  // VSW
+    glcd_writeRegister(0x32, 0x000D);  // VPS
+    glcd_writeRegister(0x40, 0x0006);  // main layer setting
+    glcd_writeRegister(0x42, 0x0000);  // main layer start addr 0
+    glcd_writeRegister(0x44, 0x0000);  // main layer start addr 1
+    glcd_writeRegister(0x04, 0x0002);  // power save config
+     */
 }
 
 int glcd_getTouch(void){
@@ -53,29 +78,57 @@ int glcd_getTouch(void){
     return 1;
 }
 
-// Configures reprogrammable pins and values for SPI config
 void glcd_init(void){
+    int i;
     glcd_configRegisters();
+
+    for (i = 0; i <= 0xFF; i++){
+	glcd_writeLut1(i, 0xDD, 0xEE, 0xEE);
+    }
 }
 
-unsigned int glcd_readGraphic(uint32_t addr){
+int glcd_readLut1(uint8_t offset, uint8_t length){
     const int DEVICE = GRAPHIC;
     const uint8_t DUMMY = 0;
-    uint16_t result = 0;
-    uint8_t a,b,c,d,e;
+    int i;
+    int result[0xFF];
 
     spi_ss_lcd = 0;
 
     // command
-    a = spi_exchange(DEVICE, 0b11000000);    // 8-bit read
+    spi_exchange(DEVICE, 0b11000000);    // 8-bit read
 
-    // address. VRAM from 0x00000 to 0x5FFFF
-    b = spi_exchange(DEVICE, 0x06); // bits 18..16
-    c = spi_exchange(DEVICE, 0x08); // bits 15..8
-    d = spi_exchange(DEVICE, addr); // bits 7..0
+    // address. registers start at 0x60800
+    spi_exchange(DEVICE, 0x06); // bits 18..16
+    spi_exchange(DEVICE, 0x00); // bits 15..8
+    spi_exchange(DEVICE, offset); // bits 7..0
+
+    // data. returns as dummy-b-g-r
+    for (i = 0; i < length; i++){
+	result[i] = spi_exchange(DEVICE, DUMMY);
+    }
+
+    spi_ss_lcd = 1;
+    return 1;
+}
+
+uint16_t glcd_readRegister(uint8_t offset){
+    const int DEVICE = GRAPHIC;
+    const uint8_t DUMMY = 0;
+    uint16_t result = 0;
+
+    spi_ss_lcd = 0;
+
+    // command
+    spi_exchange(DEVICE, 0b11000000);    // 8-bit read
+
+    // address. registers start at 0x60800
+    spi_exchange(DEVICE, 0x6); // bits 18..16
+    spi_exchange(DEVICE, 0x08); // bits 15..8
+    spi_exchange(DEVICE, offset); // bits 7..0
 
     // data.
-    e = spi_exchange(DEVICE, DUMMY);
+    spi_exchange(DEVICE, DUMMY);
     result = spi_exchange(DEVICE, DUMMY);   // lower byte
     result |= spi_exchange(DEVICE, DUMMY) << 8; // upper byte
 
@@ -85,41 +138,67 @@ unsigned int glcd_readGraphic(uint32_t addr){
 
 int glcd_readRegisters(void){
     int r4,r6,r10,r12,r14,r16,r20,r22,r24,r26,r28,r2a,r2c,r2e,r30,r32,r40,r42,r44;
-    r4 = glcd_readGraphic(0x04);
-    r6 = glcd_readGraphic(0x06);
-    r10 = glcd_readGraphic(0x10);
-    r12 = glcd_readGraphic(0x12);
-    r14 = glcd_readGraphic(0x14);
-    r16 = glcd_readGraphic(0x16);
-    r20 = glcd_readGraphic(0x20);
-    r22 = glcd_readGraphic(0x22);
-    r24 = glcd_readGraphic(0x24);
-    r26 = glcd_readGraphic(0x26);
-    r28 = glcd_readGraphic(0x28);
-    r2a = glcd_readGraphic(0x2A);
-    r2c = glcd_readGraphic(0x2C);
-    r2e = glcd_readGraphic(0x2E);
-    r30 = glcd_readGraphic(0x30);
-    r32 = glcd_readGraphic(0x32);
-    r40 = glcd_readGraphic(0x40);
-    r42 = glcd_readGraphic(0x42);
-    r44 = glcd_readGraphic(0x44);
+    r4 = glcd_readRegister(0x04);
+    r6 = glcd_readRegister(0x06);
+    r10 = glcd_readRegister(0x10);
+    r12 = glcd_readRegister(0x12);
+    r14 = glcd_readRegister(0x14);
+    r16 = glcd_readRegister(0x16);
+    r20 = glcd_readRegister(0x20);
+    r22 = glcd_readRegister(0x22);
+    r24 = glcd_readRegister(0x24);
+    r26 = glcd_readRegister(0x26);
+    r28 = glcd_readRegister(0x28);
+    r2a = glcd_readRegister(0x2A);
+    r2c = glcd_readRegister(0x2C);
+    r2e = glcd_readRegister(0x2E);
+    r30 = glcd_readRegister(0x30);
+    r32 = glcd_readRegister(0x32);
+    r40 = glcd_readRegister(0x40);
+    r42 = glcd_readRegister(0x42);
+    r44 = glcd_readRegister(0x44);
 
     return 1;
 }
 
-void glcd_writePixel(uint32_t addr, uint8_t r, uint8_t g, uint8_t b){
+int glcd_readVram(uint32_t addr, uint8_t length){
     const int DEVICE = GRAPHIC;
+    const uint8_t DUMMY = 0;
+    int i;
+
+    int res[0xFF];
 
     spi_ss_lcd = 0;
 
     // command
-    spi_exchange(DEVICE, 0b10000000);
+    spi_exchange(DEVICE, 0b11000000);    // 8-bit read
 
     // address. VRAM from 0x00000 to 0x5FFFF
     spi_exchange(DEVICE, addr>>16); // bits 18..16
     spi_exchange(DEVICE, addr>>8); // bits 15..8
     spi_exchange(DEVICE, addr); // bits 7..0
+
+    // data.
+    for (i = 0; i < length; i++){
+	res[i] = spi_exchange(DEVICE, DUMMY);
+    }
+
+    spi_ss_lcd = 1;
+    return 1;
+}
+
+void glcd_writeLut1(uint8_t offset, uint8_t r, uint8_t g, uint8_t b){
+    const int DEVICE = GRAPHIC;
+
+    spi_ss_lcd = 0;
+
+    // command
+    spi_exchange(DEVICE, 0b10000000);	// write
+
+    // address. LUT1 from 60000h to 603FFh
+    spi_exchange(DEVICE, 0x06); // bits 18..16
+    spi_exchange(DEVICE, 0x00); // bits 15..8
+    spi_exchange(DEVICE, offset); // bits 7..0
 
     // data. for 8-bit addressing, write R, G, B bytes
     spi_exchange(DEVICE, b);  // blue
@@ -127,11 +206,10 @@ void glcd_writePixel(uint32_t addr, uint8_t r, uint8_t g, uint8_t b){
     spi_exchange(DEVICE, r);  // red
 
     spi_ss_lcd = 1;
-    __delay_us(200);
 }
 
 // Writes to the registers of the GLCD
-void glcd_writeConfig(uint8_t addr_offset, uint16_t val){
+void glcd_writeRegister(uint8_t offset, uint16_t val){
     const int DEVICE = GRAPHIC;
 
     spi_ss_lcd = 0;
@@ -142,7 +220,7 @@ void glcd_writeConfig(uint8_t addr_offset, uint16_t val){
     // address. registers start at 0x60800
     spi_exchange(DEVICE, 0x6); // bits 18..16
     spi_exchange(DEVICE, 0x08); // bits 15..8
-    spi_exchange(DEVICE, addr_offset); // bits 7..0
+    spi_exchange(DEVICE, offset); // bits 7..0
 
     // data. for 8-bit addressing, register accesses are Little Endian
     spi_exchange(DEVICE, val);    // lower byte
@@ -150,4 +228,26 @@ void glcd_writeConfig(uint8_t addr_offset, uint16_t val){
 
     spi_ss_lcd = 1;
 
+}
+
+void glcd_writeVram(uint32_t addr, uint8_t lut_offset, uint32_t length){
+    const int DEVICE = GRAPHIC;
+    uint32_t i;
+
+    spi_ss_lcd = 0;
+
+    // command
+    spi_exchange(DEVICE, 0b10000000);	// write
+
+    // address. VRAM from 0x00000 to 0x5FFFF
+    spi_exchange(DEVICE, addr>>16); // bits 18..16
+    spi_exchange(DEVICE, addr>>8); // bits 15..8
+    spi_exchange(DEVICE, addr); // bits 7..0
+
+    // data. for 8 bpp LUT, write LUT address offset
+    for (i = 0; i < length; i++){
+	spi_exchange(DEVICE, lut_offset);
+    }
+
+    spi_ss_lcd = 1;
 }

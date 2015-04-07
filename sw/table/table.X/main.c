@@ -24,7 +24,7 @@
 
 int16_t main(void)
 {
-    uint32_t i = 0;
+    uint32_t i;
     /* Configure the oscillator for the device */
     ConfigureOscillator();
 
@@ -32,19 +32,18 @@ int16_t main(void)
     InitApp();
 
     spi_init();
+    spi_open(GRAPHIC);
+    spi_open(TOUCH);
     glcd_init();
 
-    spi_open(TOUCH);
+
+    for (i = 0; i < 0x1FF; i++){
+	glcd_writeVram(i, i, 1);
+    }
     while(1)
     {
-        //temp = glcd_readGraphic(0x2C);
-        glcd_writePixel(i, 176, 0, 0);
-        glcd_writePixel(i + 1, 138, 43, 226);
-        i += 2;
-        if (i > 0x5FFFF){
-            i = 0;
-        }
-        //glcd_writePixel(0x4FFFF, 87, 112, 210);
+	glcd_readLut1(0, 0xFF);
+	glcd_readVram(0, 0xFF);
         if (spi_int_toc == 1){
             glcd_getTouch();
         }
