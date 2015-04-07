@@ -20,7 +20,7 @@ void glcd_configRegisters(void){
 
     glcd_writeRegister(0x20, 0x004F);  // panel setting misc
     glcd_writeRegister(0x22, 0x0001);  // display setting
-    glcd_writeRegister(0x24, 0x0064);  // HDSIP
+    glcd_writeRegister(0x24, 0x0050);  // HDSIP
     glcd_writeRegister(0x26, 0x007F);  // NDSP
     glcd_writeRegister(0x28, 0x01E0);  // VDISP
     glcd_writeRegister(0x2A, 0x002D);  // VNDP
@@ -59,10 +59,12 @@ void glcd_configRegisters(void){
      */
 }
 
-int glcd_getTouch(void){
+struct TouchData glcd_getTouch(void){
     const int DEVICE = TOUCH;
     const uint8_t DUMMY = 0;
     uint8_t pen, x0, x1, y0, y1;
+    uint16_t x, y;
+    touchData t;
     
     pen = spi_exchange(DEVICE, DUMMY);
     __delay_us(400);
@@ -75,16 +77,22 @@ int glcd_getTouch(void){
     y1 = spi_exchange(DEVICE, DUMMY);
     __delay_us(400);
 
-    return 1;
+    x = x1<<7 | x0;
+    y = y1<<7 | y0;
+
+    x = (uint16_t)((double)x / 4095.0 * GLCD_WIDTH);
+    y = GLCD_HEIGHT - (uint16_t)((double)y / 4095.0 * GLCD_HEIGHT);
+
+    t.x = x;
+    t.y = y;
+
+    return t;
 }
 
 void glcd_init(void){
     int i;
     glcd_configRegisters();
-
-    for (i = 0; i <= 0xFF; i++){
-	glcd_writeLut1(i, 0xDD, 0xEE, 0xEE);
-    }
+    glcd_initLUT();
 }
 
 int glcd_readLut1(uint8_t offset, uint8_t length){
@@ -187,27 +195,6 @@ int glcd_readVram(uint32_t addr, uint8_t length){
     return 1;
 }
 
-void glcd_writeLut1(uint8_t offset, uint8_t r, uint8_t g, uint8_t b){
-    const int DEVICE = GRAPHIC;
-
-    spi_ss_lcd = 0;
-
-    // command
-    spi_exchange(DEVICE, 0b10000000);	// write
-
-    // address. LUT1 from 60000h to 603FFh
-    spi_exchange(DEVICE, 0x06); // bits 18..16
-    spi_exchange(DEVICE, 0x00); // bits 15..8
-    spi_exchange(DEVICE, offset); // bits 7..0
-
-    // data. for 8-bit addressing, write R, G, B bytes
-    spi_exchange(DEVICE, b);  // blue
-    spi_exchange(DEVICE, g);  // green
-    spi_exchange(DEVICE, r);  // red
-
-    spi_ss_lcd = 1;
-}
-
 // Writes to the registers of the GLCD
 void glcd_writeRegister(uint8_t offset, uint16_t val){
     const int DEVICE = GRAPHIC;
@@ -246,8 +233,51 @@ void glcd_writeVram(uint32_t addr, uint8_t lut_offset, uint32_t length){
 
     // data. for 8 bpp LUT, write LUT address offset
     for (i = 0; i < length; i++){
+	if (addr + i > 0x5FFFF){
+	    break;
+	}
 	spi_exchange(DEVICE, lut_offset);
     }
+
+    spi_ss_lcd = 1;
+}
+
+void glcd_initLUT(){
+    const int DEVICE = GRAPHIC;
+    uint32_t LUT_Address = 0x60000;
+    spi_ss_lcd = 0;
+
+    // command
+    spi_exchange(DEVICE, 0b10000000);	// write
+
+    spi_exchange(DEVICE, LUT_Address>>16); // bits 18..16
+    spi_exchange(DEVICE, LUT_Address>>8); // bits 15..8
+    spi_exchange(DEVICE, LUT_Address); // bits 7..0
+
+    spi_exchange(DEVICE, 0x00);
+    spi_exchange(DEVICE, 0x00);
+    spi_exchange(DEVICE, 0x00);
+    spi_exchange(DEVICE, 0x00);
+
+    spi_exchange(DEVICE, 0xFF);
+    spi_exchange(DEVICE, 0xFF);
+    spi_exchange(DEVICE, 0xFF);
+    spi_exchange(DEVICE, 0x00);
+
+    spi_exchange(DEVICE, 0xFF);	// blue
+    spi_exchange(DEVICE, 0x00);	// green
+    spi_exchange(DEVICE, 0x00);	// red
+    spi_exchange(DEVICE, 0x00);	// null
+
+    spi_exchange(DEVICE, 0x00);
+    spi_exchange(DEVICE, 0xFF);
+    spi_exchange(DEVICE, 0x00);
+    spi_exchange(DEVICE, 0x00);
+
+    spi_exchange(DEVICE, 0x00);
+    spi_exchange(DEVICE, 0x00);
+    spi_exchange(DEVICE, 0xFF);
+    spi_exchange(DEVICE, 0x00);
 
     spi_ss_lcd = 1;
 }

@@ -43,7 +43,7 @@ void spi_init(void){
 
     // SPI config for the touch controller
     touch_SPICON1Value = ENABLE_SCK_PIN | ENABLE_SDO_PIN | SPI_MODE8_ON
-            | SPI_SMP_OFF | SPI_CKE_ON | SLAVE_ENABLE_OFF
+            | SPI_SMP_OFF | SPI_CKE_OFF | SLAVE_ENABLE_OFF
             | CLK_POL_ACTIVE_HIGH | MASTER_ENABLE_ON | SEC_PRESCAL_2_1 ;    // mode 0
     touch_SPICON2Value = 0x00;
     touch_SPISTATValue = SPI_ENABLE;
