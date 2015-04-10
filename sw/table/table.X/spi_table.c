@@ -37,7 +37,7 @@ void spi_init(void){
     // SPI config for the graphics controller
     graphic_SPICON1Value = ENABLE_SCK_PIN | ENABLE_SDO_PIN | SPI_MODE8_ON
             | SPI_SMP_OFF | SPI_CKE_ON | SLAVE_ENABLE_OFF
-            | CLK_POL_ACTIVE_HIGH | MASTER_ENABLE_ON | SEC_PRESCAL_2_1 ;   // mode 0
+            | CLK_POL_ACTIVE_HIGH | MASTER_ENABLE_ON | PRI_PRESCAL_1_1 | SEC_PRESCAL_2_1 ;   // mode 0
     graphic_SPICON2Value = 0x00;
     graphic_SPISTATValue = SPI_ENABLE;
 

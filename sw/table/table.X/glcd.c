@@ -24,10 +24,10 @@ void glcd_configRegisters(void){
     glcd_writeRegister(0x26, 0x007F);  // NDSP
     glcd_writeRegister(0x28, 0x01E0);  // VDISP
     glcd_writeRegister(0x2A, 0x002D);  // VNDP
-    glcd_writeRegister(0x2C, 0x00A0);  // HS pulse width
-    glcd_writeRegister(0x2E, 0x0008);  // HPS
+    glcd_writeRegister(0x2C, 0x009E);  // HS pulse width
+    glcd_writeRegister(0x2E, 0x00CC);  // HPS
     glcd_writeRegister(0x30, 0x0083);  // VSW
-    glcd_writeRegister(0x32, 0x000A);  // VPS
+    glcd_writeRegister(0x32, 0x000D);  // VPS
     glcd_writeRegister(0x40, 0x0006);  // main layer setting
     glcd_writeRegister(0x42, 0x0000);  // main layer start addr 0
     glcd_writeRegister(0x44, 0x0000);  // main layer start addr 1
@@ -83,6 +83,7 @@ struct TouchData glcd_getTouch(void){
     x = (uint16_t)((double)x / 4095.0 * GLCD_WIDTH);
     y = GLCD_HEIGHT - (uint16_t)((double)y / 4095.0 * GLCD_HEIGHT);
 
+    t.pen = pen;
     t.x = x;
     t.y = y;
 
@@ -92,7 +93,58 @@ struct TouchData glcd_getTouch(void){
 void glcd_init(void){
     int i;
     glcd_configRegisters();
-    glcd_initLUT();
+    glcd_initLut1();
+}
+
+void glcd_initLut1(){
+    const int DEVICE = GRAPHIC;
+    uint32_t LUT_Address = 0x60000;
+    spi_ss_lcd = 0;
+
+    // command
+    spi_exchange(DEVICE, 0b10000000);	// write
+
+    spi_exchange(DEVICE, LUT_Address>>16); // bits 18..16
+    spi_exchange(DEVICE, LUT_Address>>8); // bits 15..8
+    spi_exchange(DEVICE, LUT_Address); // bits 7..0
+
+    glcd_initLutColor(0x00, 0x00, 0x00);    // BLACK
+    glcd_initLutColor(0x80, 0x00, 0x00);    // DARK RED
+    glcd_initLutColor(0x00, 0x80, 0x00);    // DARK GREEN
+    glcd_initLutColor(0x80, 0x80, 0x00);    // DARK YELLOW
+    glcd_initLutColor(0x00, 0x00, 0x80);    // DARK BLUE
+    glcd_initLutColor(0x80, 0x00, 0x80);    // DARK MAGENTA
+    glcd_initLutColor(0x00, 0x80, 0x80);    // DARK CYAN
+    glcd_initLutColor(0xc0, 0xc0, 0xC0);    // GRAY
+    glcd_initLutColor(0x80, 0x80, 0x80);    // DARK GRAY
+    glcd_initLutColor(0xff, 0x00, 0x00);    // RED
+    glcd_initLutColor(0x00, 0xff, 0x00);    // GREEN
+    glcd_initLutColor(0xff, 0xff, 0x00);    // YELLOW
+    glcd_initLutColor(0x00, 0x00, 0xff);    // BLUE
+    glcd_initLutColor(0xff, 0x00, 0xff);    // MAGENTA
+    glcd_initLutColor(0x00, 0xff, 0xff);    // CYAN
+    glcd_initLutColor(0xff, 0xff, 0xff);    // WHITE
+
+    spi_ss_lcd = 1;
+}
+
+void glcd_initLutColor(uint8_t r, uint8_t g, uint8_t b){
+    const int DEVICE = GRAPHIC;
+    spi_exchange(DEVICE, b);	// blue
+    spi_exchange(DEVICE, g);	// green
+    spi_exchange(DEVICE, r);	// red
+    spi_exchange(DEVICE, 0x00);	// null
+}
+
+void glcd_putBox(uint16_t x, uint16_t y, uint8_t color, uint16_t width, uint16_t height){
+    uint16_t i;
+    for (i = y; i < y+height; i++){
+	glcd_putPixel(x, i, color, width);
+    }
+}
+
+void glcd_putPixel(uint16_t x, uint16_t y, uint8_t color, uint32_t length){
+    glcd_writeVram((uint32_t)GLCD_WIDTH*y + x, color, length);
 }
 
 int glcd_readLut1(uint8_t offset, uint8_t length){
@@ -238,46 +290,6 @@ void glcd_writeVram(uint32_t addr, uint8_t lut_offset, uint32_t length){
 	}
 	spi_exchange(DEVICE, lut_offset);
     }
-
-    spi_ss_lcd = 1;
-}
-
-void glcd_initLUT(){
-    const int DEVICE = GRAPHIC;
-    uint32_t LUT_Address = 0x60000;
-    spi_ss_lcd = 0;
-
-    // command
-    spi_exchange(DEVICE, 0b10000000);	// write
-
-    spi_exchange(DEVICE, LUT_Address>>16); // bits 18..16
-    spi_exchange(DEVICE, LUT_Address>>8); // bits 15..8
-    spi_exchange(DEVICE, LUT_Address); // bits 7..0
-
-    spi_exchange(DEVICE, 0x00);
-    spi_exchange(DEVICE, 0x00);
-    spi_exchange(DEVICE, 0x00);
-    spi_exchange(DEVICE, 0x00);
-
-    spi_exchange(DEVICE, 0xFF);
-    spi_exchange(DEVICE, 0xFF);
-    spi_exchange(DEVICE, 0xFF);
-    spi_exchange(DEVICE, 0x00);
-
-    spi_exchange(DEVICE, 0xFF);	// blue
-    spi_exchange(DEVICE, 0x00);	// green
-    spi_exchange(DEVICE, 0x00);	// red
-    spi_exchange(DEVICE, 0x00);	// null
-
-    spi_exchange(DEVICE, 0x00);
-    spi_exchange(DEVICE, 0xFF);
-    spi_exchange(DEVICE, 0x00);
-    spi_exchange(DEVICE, 0x00);
-
-    spi_exchange(DEVICE, 0x00);
-    spi_exchange(DEVICE, 0x00);
-    spi_exchange(DEVICE, 0xFF);
-    spi_exchange(DEVICE, 0x00);
 
     spi_ss_lcd = 1;
 }

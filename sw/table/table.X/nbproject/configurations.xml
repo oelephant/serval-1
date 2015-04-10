@@ -4,11 +4,17 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="gfx" projectFiles="true">
+        <itemPath>gfx/drv_gfx_display.h</itemPath>
+        <itemPath>gfx/gfx_config.h</itemPath>
+      </logicalFolder>
       <itemPath>system.h</itemPath>
       <itemPath>user.h</itemPath>
       <itemPath>glcd.h</itemPath>
       <itemPath>uc_pins.h</itemPath>
       <itemPath>spi_table.h</itemPath>
+      <itemPath>gfx/system_config.h</itemPath>
+      <itemPath>lut_colors.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -17,6 +23,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="gfx" projectFiles="true">
+      </logicalFolder>
       <itemPath>configuration_bits.c</itemPath>
       <itemPath>interrupts.c</itemPath>
       <itemPath>main.c</itemPath>
@@ -37,10 +45,13 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>../../common</Elem>
+    <Elem>../../../../../../../../../../microchip/mla/v2014_07_22/framework/gfx</Elem>
+    <Elem>gfx</Elem>
+    <Elem>driver/gfx</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
-    <conf name="default" type="2">
+    <conf name="serval" type="2">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <targetDevice>PIC24FJ128GB206</targetDevice>
@@ -87,7 +98,8 @@
         <property key="enable-short-double" value="false"/>
         <property key="enable-symbols" value="true"/>
         <property key="enable-unroll-loops" value="false"/>
-        <property key="extra-include-directories" value=""/>
+        <property key="extra-include-directories"
+                  value="C:\microchip\mla\v2014_07_22\framework\;..\..\..\..\..\..\..\..\..\..\microchip\mla\v2014_07_22\framework\gfx;C:\Users\Tae\Documents\School_Docs\8Senior\ceen4990\serval\sw\table\table.X\gfx"/>
         <property key="isolate-each-function" value="false"/>
         <property key="keep-inline" value="false"/>
         <property key="oXC16gcc-align-arr" value="false"/>
@@ -243,25 +255,32 @@
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
         <property key="memories.configurationmemory" value="true"/>
+        <property key="memories.configurationmemory2" value="true"/>
         <property key="memories.dataflash" value="true"/>
         <property key="memories.eeprom" value="true"/>
         <property key="memories.flashdata" value="true"/>
         <property key="memories.id" value="true"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.end" value="0x157f7"/>
+        <property key="memories.programmemory.partition2" value="true"/>
+        <property key="memories.programmemory.partition2.end"
+                  value="${memories.programmemory.partition2.end.value}"/>
+        <property key="memories.programmemory.partition2.start"
+                  value="${memories.programmemory.partition2.start.value}"/>
         <property key="memories.programmemory.start" value="0x0"/>
-        <property key="memories.userotp" value="false"/>
         <property key="poweroptions.powerenable" value="false"/>
         <property key="programmertogo.imagename" value=""/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.pgmspeed" value="2"/>
+        <property key="programoptions.preservedataflash" value="false"/>
         <property key="programoptions.preserveeeprom" value="false"/>
         <property key="programoptions.preserveprogramrange" value="false"/>
         <property key="programoptions.preserveprogramrange.end" value="0x157f7"/>
         <property key="programoptions.preserveprogramrange.start" value="0x0"/>
         <property key="programoptions.preserveuserid" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
+        <property key="programoptions.programuserotp" value="false"/>
         <property key="programoptions.testmodeentrymethod" value="VPPFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
