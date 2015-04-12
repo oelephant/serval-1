@@ -11,6 +11,9 @@
 #define spi_int_toc_dir TRISBbits.TRISB7
 #define spi_int_toc PORTBbits.RB7
 
+#define spi_int_wifi_dir TRISDbits.TRISD2
+#define spi_int_wifi PORTDbits.RD2
+
 #define spi_ss_lcd_dir TRISDbits.TRISD9
 #define spi_ss_lcd LATDbits.LATD9
 

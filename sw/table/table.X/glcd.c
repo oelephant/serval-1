@@ -1,4 +1,3 @@
-#include <spi.h>
 #include <xc.h>
 
 #include "system.h"        /* System funct/params, like osc/peripheral config */
@@ -65,7 +64,10 @@ struct TouchData glcd_getTouch(void){
     uint8_t pen, x0, x1, y0, y1;
     uint16_t x, y;
     touchData t;
-    
+
+    spi_open(TOUCH);
+    spi_ss_toc = 0;	// enable
+
     pen = spi_exchange(DEVICE, DUMMY);
     __delay_us(400);
     x0 = spi_exchange(DEVICE, DUMMY);
@@ -76,6 +78,8 @@ struct TouchData glcd_getTouch(void){
     __delay_us(400);
     y1 = spi_exchange(DEVICE, DUMMY);
     __delay_us(400);
+
+    spi_ss_toc = 1;	// disable
 
     x = x1<<7 | x0;
     y = y1<<7 | y0;
@@ -91,8 +95,9 @@ struct TouchData glcd_getTouch(void){
 }
 
 void glcd_init(void){
-    int i;
+    spi_open(GRAPHIC);
     glcd_configRegisters();
+    __delay_ms(100);
     glcd_initLut1();
 }
 
@@ -115,7 +120,7 @@ void glcd_initLut1(){
     glcd_initLutColor(0x00, 0x00, 0x80);    // DARK BLUE
     glcd_initLutColor(0x80, 0x00, 0x80);    // DARK MAGENTA
     glcd_initLutColor(0x00, 0x80, 0x80);    // DARK CYAN
-    glcd_initLutColor(0xc0, 0xc0, 0xC0);    // GRAY
+    glcd_initLutColor(0xc0, 0xc0, 0xc0);    // GRAY
     glcd_initLutColor(0x80, 0x80, 0x80);    // DARK GRAY
     glcd_initLutColor(0xff, 0x00, 0x00);    // RED
     glcd_initLutColor(0x00, 0xff, 0x00);    // GREEN

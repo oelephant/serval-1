@@ -23,6 +23,7 @@ void InitApp(void) {
     ANSB = 0; // digital io
 
     spi_int_toc_dir = 1; // input
+    spi_int_wifi_dir = 1;   // input
     spi_ss_mem_dir = 0; // output
     spi_ss_toc_dir = 0; // output
     spi_ss_lcd_dir = 0; // output
