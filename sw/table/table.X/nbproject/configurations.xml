@@ -16,6 +16,8 @@
       <itemPath>gfx/system_config.h</itemPath>
       <itemPath>lut_colors.h</itemPath>
       <itemPath>wifi.h</itemPath>
+      <itemPath>screen.h</itemPath>
+      <itemPath>object.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -35,6 +37,7 @@
       <itemPath>glcd.c</itemPath>
       <itemPath>spi_table.c</itemPath>
       <itemPath>wifi.c</itemPath>
+      <itemPath>screen.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -100,8 +103,7 @@
         <property key="enable-short-double" value="false"/>
         <property key="enable-symbols" value="true"/>
         <property key="enable-unroll-loops" value="false"/>
-        <property key="extra-include-directories"
-                  value="C:\microchip\mla\v2014_07_22\framework\;..\..\..\..\..\..\..\..\..\..\microchip\mla\v2014_07_22\framework\gfx;C:\Users\Tae\Documents\School_Docs\8Senior\ceen4990\serval\sw\table\table.X\gfx"/>
+        <property key="extra-include-directories" value=""/>
         <property key="isolate-each-function" value="false"/>
         <property key="keep-inline" value="false"/>
         <property key="oXC16gcc-align-arr" value="false"/>

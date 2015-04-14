@@ -14,6 +14,7 @@
 #include "user.h"          /* User funct/params, such as InitApp              */
 #include "glcd.h"
 #include "lut_colors.h"
+#include "screen.h"
 #include "spi_table.h"
 #include "uc_pins.h"
 #include "wifi.h"
@@ -26,8 +27,6 @@
 
 int16_t main(void)
 {
-    int z = 0;
-    touchData t;
     /* Configure the oscillator for the device */
     ConfigureOscillator();
 
@@ -38,30 +37,12 @@ int16_t main(void)
     spi_init();
     glcd_init();
 
-    glcd_writeVram(0, WHITE, (uint32_t)GLCD_WIDTH*GLCD_HEIGHT);
-    glcd_putBox(50, 50, GRAY, 200, 100);
+    screen_drawBackground();
+    screen_drawHome();
 
-    while(1)
-    {
+    while(1){
         if (spi_int_toc == 1){
-            t = glcd_getTouch();
-	    if (t.x > 50 && t.x < 250 && t.y > 50 && t.y < 150){
-		if (z==0){
-		    glcd_putBox(50, 50, MAGENTA, 200, 100);
-		    z = 1;
-		}
-		if ((t.pen&1) == 0){
-		    glcd_writeVram(0, WHITE, (uint32_t)GLCD_WIDTH*GLCD_HEIGHT);
-		    glcd_putBox(50, 50, GRAY, 200, 100);
-		}
-	    }
-	    else{
-		if (z==1){
-		    glcd_putBox(50, 50, GRAY, 200, 100);
-		    z = 0;
-		}
-		glcd_putPixel(t.x, t.y, MAGENTA, 3);
-	    }
+	    screen_handleTouch();
         }
 	else if (spi_int_wifi == 0){
 	    wifi_read();
