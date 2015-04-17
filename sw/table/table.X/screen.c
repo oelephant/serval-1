@@ -4,6 +4,7 @@
 #include "lut_colors.h"
 #include "object.h"
 #include "screen.h"
+#include "wifi.h"
 
 struct Button button_newOrder = {50, 150, GREEN, 250, 180};
 struct Button button_continueOrder = {340, 150, MAGENTA, 250, 180};
@@ -28,6 +29,7 @@ void screen_drawHome(void){
 void screen_handleTouch(void){
     struct TouchData t;
     struct Button *b;
+    char *message;
 
     t = glcd_getTouch();
 
@@ -37,14 +39,20 @@ void screen_handleTouch(void){
 	if (b == &button_newOrder){
 	    glcd_putBox(b->x, b->y, WHITE, b->width, b->height);
 	    screen_drawButton(&button_newOrder);
+            message = "new order";
+            wifi_transmit(message, 9);
 	}
 	else if (b == &button_continueOrder){
 	    glcd_putBox(b->x, b->y, WHITE, b->width, b->height);
 	    screen_drawButton(&button_continueOrder);
+            message = "continue order";
+            wifi_transmit(message, 14);
 	}
 	else if (b == &button_page){
 	    glcd_putBox(b->x, b->y, WHITE, b->width, b->height);
 	    screen_drawButton(&button_page);
+            message = "page";
+            wifi_transmit(message, 4);
 	}
     }
     /*

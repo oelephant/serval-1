@@ -4,38 +4,8 @@
 #include <libpic30.h>   // for delays
 #include "uc_pins.h"
 #include "spi_table.h"
+#include <string.h>
 #include "wifi.h"
-
-int wifi_command(){
-    uint8_t result[30];
-    int i;
-    uint8_t sum = 0;
-    uint8_t value;
-
-    result[0] = wifi_exchange(0x7E);	// start delimiter
-
-    result[1] = wifi_exchange(0x00);
-    result[2] = wifi_exchange(0x04);	// number of bytes between this and checksum
-
-    value = 0x08;
-    result[3] = wifi_exchange(value);	// API frame identifier
-    sum += value;
-
-    value = 0x01;
-    result[4] = wifi_exchange(value);	// frame ID
-    sum += value;
-
-    value = 'I';
-    result[5] = wifi_exchange(value);
-    sum += value;
-    value = 'D';
-    result[6] = wifi_exchange(value);	// command name
-    sum += value;
-
-    result[7] = wifi_exchange(0xFF - sum);	// checksum
-
-    return 1;
-}
 
 uint8_t wifi_exchange(uint8_t value){
     uint8_t result;
@@ -56,5 +26,79 @@ int wifi_read(){
     for (i = 0; i < 30; i++){
 	result[i] = wifi_exchange(DUMMY);
     }
+    return 1;
+}
+
+int wifi_transmit(char *message2, uint8_t messageLength){
+    uint8_t i, checksum, value;
+    uint8_t address[4] = {0xc0, 0xa8, 0x01, 0x32};
+    uint8_t destPort[2] = {0x26, 0x16};
+    uint8_t sourcePort[2] = {0x00, 0x00};
+    uint16_t packetLength;
+    char message[0xff];
+    for (i = 0; i < messageLength; i++){
+        message[i] = *(message2+i);
+    }
+    checksum = 0;
+    packetLength = messageLength + 12;  // message bytes + 1x frame type, 1x frame id, 4x dest address, 2x dest port, 2x src port, 1x protocol, 1x transmit options
+
+    // start delimiter
+    wifi_exchange(0x7e);
+
+    // number of bytes between this and checksum
+    wifi_exchange(packetLength>>8);
+    wifi_exchange(packetLength);
+
+    // frame type
+    value = 0x20;   // Wi-Fi Transmit Request IPv4
+    wifi_exchange(value);
+    checksum += value;
+
+    // frame ID
+    value = 0x00;
+    wifi_exchange(value);
+    checksum += value;
+
+    // destination address
+    for (i = 0; i < 4; i++){
+        value = address[i];
+        wifi_exchange(value);
+        checksum += value;
+    }
+
+    // destination port
+    for (i = 0; i < 2; i++){
+        value = destPort[i];
+        wifi_exchange(value);
+        checksum += value;
+    }
+
+    // source port
+    for (i = 0; i < 2; i++){
+        value = sourcePort[i];
+        wifi_exchange(value);
+        checksum += value;
+    }
+
+    // protocol
+    value = 0x01;   // TCP
+    wifi_exchange(value);
+    checksum += value;
+
+    // transmit options
+    value = 0x00;
+    wifi_exchange(value);
+    checksum += value;
+
+    // message
+    for (i = 0; i < messageLength; i++){
+        value = message[i];
+        wifi_exchange(value);
+        checksum += value;
+    }
+
+    // checksum
+    wifi_exchange(0xff - checksum);
+
     return 1;
 }
