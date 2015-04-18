@@ -10,7 +10,7 @@
 
 uint8_t wifi_exchange(uint8_t value);
 int wifi_read();
-int wifi_transmit(char *message, uint8_t messageLength);
+int wifi_transmit(char *message);
 
 #endif	/* WIFI_H */
 

@@ -8,9 +8,9 @@
 #ifndef GLCD_H
 #define	GLCD_H
 
-#include <stdint.h>
+#include "include.h"
 
-typedef struct TouchData {uint8_t pen; uint16_t x; uint16_t y;} touchData;
+struct TouchData {uint8_t pen; uint16_t x; uint16_t y;};
 
 #define spi_int_toc PORTBbits.RB7
 #define GLCD_WIDTH 640
@@ -22,7 +22,9 @@ void glcd_init(void);
 void glcd_initLut1();
 void glcd_initLutColor(uint8_t r, uint8_t g, uint8_t b);
 void glcd_putBox(uint16_t x, uint16_t y, uint8_t color, uint16_t width, uint16_t height);
+uint8_t glcd_putChar(uint16_t x, uint16_t y, uint8_t color, char c);
 void glcd_putPixel(uint16_t x, uint16_t y, uint8_t color, uint32_t length);
+void glcd_putString(uint16_t x, uint16_t y, uint8_t color, char *c);
 int glcd_readLut1(uint8_t offset, uint8_t length);
 uint16_t glcd_readRegister(uint8_t offset);
 int glcd_readRegisters(void);

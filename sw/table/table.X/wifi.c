@@ -1,7 +1,6 @@
 #include <xc.h>
 
 #include "system.h"        /* System funct/params, like osc/peripheral config */
-#include <libpic30.h>   // for delays
 #include "uc_pins.h"
 #include "spi_table.h"
 #include <string.h>
@@ -29,16 +28,17 @@ int wifi_read(){
     return 1;
 }
 
-int wifi_transmit(char *message2, uint8_t messageLength){
-    uint8_t i, checksum, value;
+int wifi_transmit(char *message){
+    uint8_t i, checksum, value, messageLength;
     uint8_t address[4] = {0xc0, 0xa8, 0x01, 0x32};
     uint8_t destPort[2] = {0x26, 0x16};
     uint8_t sourcePort[2] = {0x00, 0x00};
     uint16_t packetLength;
-    char message[0xff];
-    for (i = 0; i < messageLength; i++){
-        message[i] = *(message2+i);
-    }
+    messageLength = strlen(message);
+//    char message[0xff];
+//    for (i = 0; i < messageLength; i++){
+//        message[i] = *(message2+i);
+//    }
     checksum = 0;
     packetLength = messageLength + 12;  // message bytes + 1x frame type, 1x frame id, 4x dest address, 2x dest port, 2x src port, 1x protocol, 1x transmit options
 

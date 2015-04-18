@@ -8,17 +8,22 @@
 #ifndef SCREEN_H
 #define	SCREEN_H
 
+#include "include.h"
+
 #include "object.h"
 
 typedef enum {  HOME,
-                SCR2} Screens;
+                ORDER} Screens;
 
+extern struct Button button_page;
+extern struct Button button_return;
 
-void screen_drawButton(struct Button *b);
-struct Button * screen_identifyTouch(struct TouchData *t);
+void screen_change(int screen);
+void screen_draw(void);
 void screen_drawBackground(void);
-void screen_drawHome(void);
+void screen_drawButton(struct Button *b);
 void screen_handleTouch(void);
+bool screen_isWithinBounds(struct TouchData *t, struct Button *b);
 
 #endif	/* SCREEN_H */
 
