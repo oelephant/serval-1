@@ -12,14 +12,19 @@
 
 #include "object.h"
 
-typedef enum {  HOME,
-                ORDER} Screens;
+#define BACKGROUND WHITE
 
+typedef enum {  HOME,
+                CATEGORIES,
+                ITEMS,
+                CHECK} Screens;
+
+extern struct Button button_up;
+extern struct Button button_down;
 extern struct Button button_page;
 extern struct Button button_return;
 
-void screen_change(int screen);
-void screen_draw(void);
+void screen_draw(int screen, int parameter);
 void screen_drawBackground(void);
 void screen_drawButton(struct Button *b);
 void screen_handleTouch(void);

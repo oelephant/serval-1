@@ -1,9 +1,8 @@
-#include <xc.h>
+#include "include.h"
 
 #include "system.h"        /* System funct/params, like osc/peripheral config */
 #include "uc_pins.h"
 #include "spi_table.h"
-#include <string.h>
 #include "wifi.h"
 
 uint8_t wifi_exchange(uint8_t value){
@@ -35,10 +34,6 @@ int wifi_transmit(char *message){
     uint8_t sourcePort[2] = {0x00, 0x00};
     uint16_t packetLength;
     messageLength = strlen(message);
-//    char message[0xff];
-//    for (i = 0; i < messageLength; i++){
-//        message[i] = *(message2+i);
-//    }
     checksum = 0;
     packetLength = messageLength + 12;  // message bytes + 1x frame type, 1x frame id, 4x dest address, 2x dest port, 2x src port, 1x protocol, 1x transmit options
 
