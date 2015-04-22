@@ -23,9 +23,7 @@ UINT wifi_SPISTATValue;
 uint8_t spi_exchange(int device, uint8_t dataOut){
     uint8_t result;
     if (device == GRAPHIC){
-        SPI1STATbits.SPIROV = 0;
         WriteSPI1(dataOut);
-        //while (SPI1_Tx_Buf_Full);  // wait till completion of transmission
         while (!SPI1_Rx_Buf_Full);
         result = ReadSPI1();
     }

@@ -10,7 +10,8 @@
 struct Button button_up = {550, 10, CFF5F5F, 80, 170, "(U)", WHITE};
 struct Button button_down = {550, 190, C5FFF00, 80, 170, "(D)", WHITE};
 struct Button button_page = {180, 390, CFF8700, 220, 80, "PAGE SERVER", WHITE};
-struct Button button_return = {10, 390, C875F87, 130, 80, "BACK", WHITE};
+struct Button button_return = {10, 390, CAF00FF, 160, 80, "BACK", WHITE};
+struct Button button_viewCheck = {410, 390, C0087FF, 220, 80, "REVIEW CHECK", WHITE};
 static int currentScreen = HOME;
 
 void screen_draw(int screen, int parameter){

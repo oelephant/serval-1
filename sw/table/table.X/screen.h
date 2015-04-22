@@ -23,6 +23,7 @@ extern struct Button button_up;
 extern struct Button button_down;
 extern struct Button button_page;
 extern struct Button button_return;
+extern struct Button button_viewCheck;
 
 void screen_draw(int screen, int parameter);
 void screen_drawBackground(void);

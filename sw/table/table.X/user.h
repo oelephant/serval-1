@@ -11,3 +11,6 @@
 /* TODO User level functions prototypes (i.e. InitApp) go here */
 
 void InitApp(void);         /* I/O and Peripheral Initialization */
+void reverse(char *str, int len);
+int intToStr(int x, char str[], int d);
+void ftoa(float n, char *res, int afterpoint);

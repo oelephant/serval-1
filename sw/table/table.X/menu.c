@@ -48,7 +48,7 @@ struct Menu * menu_getRoot(int category){
 }
 
 void menu_init(void){
-    menu_addItem(1, "Toast", "is toasty", ENTREE, 11.12);
+    menu_addItem(1, "Toast", "is toasty and has quite a long description that needs to wrap around, perhaps even over as many as three lines", ENTREE, 11.12);
     menu_addItem(2, "Eggs", "are eggy", ENTREE, 23.11);
     menu_addItem(3, "Jam", "it's very jammy", ENTREE, 2.11);
     menu_addItem(5, "Spider Goulash", "ndesc", ENTREE, 99.99);
@@ -58,6 +58,7 @@ void menu_init(void){
     menu_addItem(4, "Doughnuts", "are frosted", DESSERT, 99.99);
     menu_addItem(9, "Napoleonas Torte", "ndesc", DESSERT, 99.99);
     menu_addItem(12, "Pudding", "ndesc", DESSERT, 99.99);
+    menu_addItem(12, "ice cream", "ndesc", DESSERT, 11.99);
     menu_addItem(10, "Shasta", "ndesc", DRINK, 99.99);
     menu_addItem(11, "Cactus juice", "It's the quenchiest", DRINK, 99.99);
     menu_addItem(8, "Spring Roll", "ndesc", APPETIZER, 99.99);

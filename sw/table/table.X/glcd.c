@@ -34,35 +34,51 @@ void glcd_configRegisters(void){
     glcd_writeRegister(0x42, 0x0000);  // main layer start addr 0
     glcd_writeRegister(0x44, 0x0000);  // main layer start addr 1
     glcd_writeRegister(0x04, 0x0002);  // power save config
+}
 
-    /*
-    glcd_writeRegister(0x06, 0x0100);  // software reset
-    glcd_writeRegister(0x04, 0x0000);  // power save config
-    glcd_writeRegister(0x10, 0x0000);  // pll setting 0
-    glcd_writeRegister(0x12, 0x0007);  // pll setting 1
-    glcd_writeRegister(0x14, 0x0013);  // pll setting 2
-    glcd_writeRegister(0x16, 0x0001);  // internal clock config
-    glcd_writeRegister(0x10, 0x0001);  // pll setting 0
-    glcd_writeRegister(0x04, 0x0001);  // power save config
-    glcd_writeRegister(0x20, 0x004F);  // panel setting misc
-    glcd_writeRegister(0x22, 0x0001);  // display setting
-    glcd_writeRegister(0x24, 0x0050);  // HDSIP
-    glcd_writeRegister(0x26, 0x007F);  // NDSP
-    glcd_writeRegister(0x28, 0x01E0);  // VDISP
-    glcd_writeRegister(0x2A, 0x002D);  // VNDP
-    glcd_writeRegister(0x2C, 0x0080);  // HS pulse width
-    glcd_writeRegister(0x2E, 0x00CC);  // HPS
-    glcd_writeRegister(0x30, 0x0080);  // VSW
-    glcd_writeRegister(0x32, 0x000D);  // VPS
-    glcd_writeRegister(0x40, 0x0006);  // main layer setting
-    glcd_writeRegister(0x42, 0x0000);  // main layer start addr 0
-    glcd_writeRegister(0x44, 0x0000);  // main layer start addr 1
-    glcd_writeRegister(0x04, 0x0002);  // power save config
-     */
+int glcd_configTouch(void){
+    const uint8_t DUMMY = 0;
+    uint8_t startAddress;
+    uint8_t reply[5];
+
+    spi_open(TOUCH);
+    spi_ss_toc = 0;	// enable
+
+    // get register start address
+    glcd_touchExchange(0x55);	// header
+    glcd_touchExchange(1);	// number of bytes after this
+    glcd_touchExchange(0x22);	// command ID (register start address req)
+    //while (!spi_int_toc);
+    reply[0] = glcd_touchExchange(DUMMY);	// header
+    reply[1] = glcd_touchExchange(DUMMY);	// number of bytes to follow
+    reply[2] = glcd_touchExchange(DUMMY);	// success status
+    reply[3] = glcd_touchExchange(DUMMY);
+    if (!(reply[0] == 0x55 && reply[1] == 0x03 && reply[2] == 0x00 && reply[3] == 0x22)){
+	return 1;
+    }
+    startAddress = glcd_touchExchange(DUMMY);	// start address
+
+    // write to register
+    glcd_touchExchange(0x55);	// header
+    glcd_touchExchange(0x04 + 1);	// number of bytes after this
+    glcd_touchExchange(0x21);	// command ID (register write)
+    glcd_touchExchange(0x00);	// address high byte
+    glcd_touchExchange(startAddress+0x0C);	// address low byte
+    glcd_touchExchange(0x00);	// data high
+    glcd_touchExchange(0x51);	// data (pen down = 1; pen up = 0)
+    //while (!spi_int_toc);
+    reply[0] = glcd_touchExchange(DUMMY);
+    reply[1] = glcd_touchExchange(DUMMY);
+    reply[2] = glcd_touchExchange(DUMMY);
+    reply[3] = glcd_touchExchange(DUMMY);
+
+    spi_ss_toc = 1;	// disable
+
+    return 1;
 }
 
 struct TouchData glcd_getTouch(void){
-    const int DEVICE = TOUCH;
+    static uint8_t lastPen;
     const uint8_t DUMMY = 0;
     uint8_t pen, x0, x1, y0, y1;
     uint16_t x, y;
@@ -71,16 +87,11 @@ struct TouchData glcd_getTouch(void){
     spi_open(TOUCH);
     spi_ss_toc = 0;	// enable
 
-    pen = spi_exchange(DEVICE, DUMMY);
-    __delay_us(400);
-    x0 = spi_exchange(DEVICE, DUMMY);
-    __delay_us(400);
-    x1 = spi_exchange(DEVICE, DUMMY);
-    __delay_us(400);
-    y0 = spi_exchange(DEVICE, DUMMY);
-    __delay_us(400);
-    y1 = spi_exchange(DEVICE, DUMMY);
-    __delay_us(400);
+    pen = glcd_touchExchange(DUMMY);
+    x0 = glcd_touchExchange(DUMMY);
+    x1 = glcd_touchExchange(DUMMY);
+    y0 = glcd_touchExchange(DUMMY);
+    y1 = glcd_touchExchange(DUMMY);
 
     spi_ss_toc = 1;	// disable
 
@@ -90,14 +101,21 @@ struct TouchData glcd_getTouch(void){
     x = (uint16_t)((double)x / 4095.0 * GLCD_WIDTH);
     y = GLCD_HEIGHT - (uint16_t)((double)y / 4095.0 * GLCD_HEIGHT);
 
-    t.pen = pen;
+    if ((lastPen&1) == 0 && (pen&1) == 0){
+	t.pen = 1;
+    }
+    else{
+	t.pen = pen;
+    }
     t.x = x;
     t.y = y;
+    lastPen = t.pen;
 
     return t;
 }
 
 void glcd_init(void){
+    //glcd_configTouch();
     spi_open(GRAPHIC);
     glcd_configRegisters();
     __delay_ms(100);
@@ -402,9 +420,16 @@ void glcd_putPixel(uint16_t x, uint16_t y, uint8_t color, uint32_t length){
 
 void glcd_putString(uint16_t x, uint16_t y, uint8_t color, char *c){
     uint8_t i,width;
+    uint16_t totalWidth = 0;
     for (i = 0; i < strlen(c); i++){
+	if (totalWidth > 400 && c[i-1] == ' '){
+	    x -= totalWidth;
+	    totalWidth = 0;
+	    y += 23;
+	}
 	width = glcd_putChar(x, y, color, c[i]);
 	x += width+2;
+	totalWidth += width+2;
     }
 }
 
@@ -506,6 +531,12 @@ int glcd_readVram(uint32_t addr, uint8_t length){
 
     spi_ss_lcd = 1;
     return 1;
+}
+
+uint8_t glcd_touchExchange(uint8_t value){
+    uint8_t result = spi_exchange(TOUCH, value);
+    __delay_us(400);
+    return result;
 }
 
 // Writes to the registers of the GLCD

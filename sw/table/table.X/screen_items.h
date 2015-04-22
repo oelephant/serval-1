@@ -13,7 +13,7 @@
 void screen_items_clear(void);
 void screen_items_clearEntries(void);
 void screen_items_draw(int category);
-void screen_items_drawEntry(struct Button *b, struct Food *food, int color);
+void screen_items_drawEntry(struct Button *b, int index, int color);
 void screen_items_drawEntries(void);
 void screen_items_handleTouch(void);
 void screen_items_updateUpDown(void);

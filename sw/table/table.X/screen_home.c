@@ -1,5 +1,6 @@
 #include "include.h"
 
+#include "check.h"
 #include "glcd.h"
 #include "lut_colors.h"
 #include "object.h"
@@ -8,16 +9,15 @@
 #include "wifi.h"
 #include "menu.h"
 
-struct Button button_newOrder = {50, 150, C00FF5F, 250, 180, "NEW ORDER", WHITE};
-struct Button button_continueOrder = {340, 150, CAF005F, 250, 180, "CONTINUE ORDER", WHITE};
+struct Button button_newOrder = {65, 150, C00FF5F, 250, 180, "NEW ORDER", WHITE};
+struct Button button_continueOrder = {325, 150, CAF005F, 250, 180, "CONTINUE ORDER", WHITE};
 extern struct Button button_page;
+extern struct Check check;
 
 void screen_home_clear(void){
     struct Button *b = &button_newOrder;
     glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
     b = &button_continueOrder;
-    glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
-    b = &button_page;
     glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
 }
 
@@ -37,6 +37,7 @@ void screen_home_handleTouch(void){
 	if (screen_isWithinBounds(&t, &button_newOrder)){
 	    b = &button_newOrder;
 	    glcd_putBox(b->x, b->y, C5FAF5F, b->width, b->height);
+	    check_reset();
             screen_draw(CATEGORIES, -1);
 	}
 	else if (screen_isWithinBounds(&t, &button_continueOrder)){
