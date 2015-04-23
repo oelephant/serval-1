@@ -13,10 +13,10 @@ typedef enum {  ENTREE,
                 DRINK,
                 DESSERT} Categories;
 
-struct Button { uint16_t x; uint16_t y;
-                uint8_t color;
-                uint16_t width; uint16_t height;
-                char *text; uint8_t textColor;};
+struct Button { int x; int y;
+                char color;
+                int width; int height;
+                char *text; char textColor;};
 
 struct Food {   int id; char* name; char* desc; int category; float price;};
 

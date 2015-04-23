@@ -10,7 +10,7 @@
 
 #include "include.h"
 
-struct TouchData {uint8_t pen; uint16_t x; uint16_t y;};
+struct TouchData {char pen; int x; int y;};
 
 #define spi_int_toc PORTBbits.RB7
 #define GLCD_WIDTH 640
@@ -21,17 +21,17 @@ int glcd_configTouch(void);
 struct TouchData glcd_getTouch(void);
 void glcd_init(void);
 void glcd_initLut1();
-void glcd_initLutColor(uint8_t r, uint8_t g, uint8_t b);
-void glcd_putBox(uint16_t x, uint16_t y, uint8_t color, uint16_t width, uint16_t height);
-uint8_t glcd_putChar(uint16_t x, uint16_t y, uint8_t color, char c);
-void glcd_putPixel(uint16_t x, uint16_t y, uint8_t color, uint32_t length);
-void glcd_putString(uint16_t x, uint16_t y, uint8_t color, char *c);
-int glcd_readLut1(uint8_t offset, uint8_t length);
-uint16_t glcd_readRegister(uint8_t offset);
+void glcd_initLutColor(char r, char g, char b);
+void glcd_putBox(int x, int y, char color, int width, int height);
+char glcd_putChar(int x, int y, char color, char c);
+void glcd_putPixel(int x, int y, char color, long length);
+void glcd_putString(int x, int y, char color, char *c);
+int glcd_readLut1(char offset, char length);
+int glcd_readRegister(char offset);
 int glcd_readRegisters(void);
-int glcd_readVram(uint32_t addr, uint8_t length);
-uint8_t glcd_touchExchange(uint8_t value);
-void glcd_writeRegister(uint8_t offset, uint16_t val);
-void glcd_writeVram(uint32_t addr, uint8_t lut_offset, uint32_t length);
+int glcd_readVram(long addr, char length);
+char glcd_touchExchange(char value);
+void glcd_writeRegister(char offset, int val);
+void glcd_writeVram(long addr, char lut_offset, long length);
 #endif	/* GLCD_H */
 

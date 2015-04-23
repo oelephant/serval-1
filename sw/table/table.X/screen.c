@@ -10,7 +10,7 @@
 struct Button button_up = {550, 10, CFF5F5F, 80, 170, "(U)", WHITE};
 struct Button button_down = {550, 190, C5FFF00, 80, 170, "(D)", WHITE};
 struct Button button_page = {180, 390, CFF8700, 220, 80, "PAGE SERVER", WHITE};
-struct Button button_return = {10, 390, CAF00FF, 160, 80, "BACK", WHITE};
+struct Button button_return = {10, 390, CAF5FAF, 160, 80, "BACK", WHITE};
 struct Button button_viewCheck = {410, 390, C0087FF, 220, 80, "REVIEW CHECK", WHITE};
 static int currentScreen = HOME;
 
@@ -45,7 +45,7 @@ void screen_draw(int screen, int parameter){
 }
 
 void screen_drawBackground(void){
-    glcd_writeVram(0, BACKGROUND, (uint32_t)GLCD_WIDTH*GLCD_HEIGHT);
+    glcd_writeVram(0, BACKGROUND, (long)GLCD_WIDTH*GLCD_HEIGHT);
     glcd_putBox(20, 375, CAFFFFF, GLCD_WIDTH-40, 2);
     glcd_putBox(20, 377, CAFAFFF, GLCD_WIDTH-40, 2);
 }

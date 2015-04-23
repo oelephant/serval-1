@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-extern const uint8_t Tahoma19x21[];
+extern const char Tahoma19x21[];
 
 #endif	/* FONT_H */
 

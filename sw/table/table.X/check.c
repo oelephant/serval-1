@@ -6,7 +6,7 @@
 struct Check check;
 
 void check_addItem(struct Food *food){
-    uint8_t i;
+    unsigned int i;
     if (check.length > MAX_CHECK_LENGTH){
 	return;
     }
@@ -30,7 +30,7 @@ void check_reset(void){
 }
 
 void check_removeItem(struct Food *food){
-    uint8_t i,j;
+    unsigned int i,j;
     for (i = 0; i < check.length; i++){
 	if (check.foods[i]->id == food->id){
 	    if (check.qty[i] != 0){

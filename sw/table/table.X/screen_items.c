@@ -14,7 +14,7 @@
 #include "user.h"
 #include "wifi.h"
 
-static uint8_t currentItemIndex;
+static unsigned int currentItemIndex;
 static bool upEnabled;
 static bool downEnabled;
 static struct Menu *menu;
@@ -142,7 +142,7 @@ void screen_items_handleTouch(void){
 	    b = &button_page;
 	    glcd_putBox(b->x, b->y, CD75F00, b->width, b->height);
 	    screen_drawButton(b);
-            wifi_transmit("page");
+            wifi_pageServer();
 	}
         else if (screen_isWithinBounds(&t, &button_return)){
 	    b = &button_return;

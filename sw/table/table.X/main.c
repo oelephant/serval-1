@@ -20,7 +20,7 @@
 /* Main Program                                                               */
 /******************************************************************************/
 
-int16_t main(void)
+int main(void)
 {
     /* Configure the oscillator for the device */
     ConfigureOscillator();

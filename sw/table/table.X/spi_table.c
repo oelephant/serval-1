@@ -20,8 +20,8 @@ UINT wifi_SPICON1Value;
 UINT wifi_SPICON2Value;
 UINT wifi_SPISTATValue;
 
-uint8_t spi_exchange(int device, uint8_t dataOut){
-    uint8_t result;
+char spi_exchange(int device, char dataOut){
+    char result;
     if (device == GRAPHIC){
         WriteSPI1(dataOut);
         while (!SPI1_Rx_Buf_Full);

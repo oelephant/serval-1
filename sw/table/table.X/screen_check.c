@@ -13,7 +13,7 @@
 #include "wifi.h"
 
 char packet[0xFF];
-static uint8_t currentItemIndex;
+static unsigned int currentItemIndex;
 static bool upEnabled;
 static bool downEnabled;
 extern struct Check check;
@@ -103,7 +103,7 @@ void screen_check_drawTotalPrice(int color){
 void screen_check_handleTouch(void){
     struct TouchData t;
     struct Button *b;
-    uint8_t index;
+    unsigned int index;
 
     t = glcd_getTouch();
 
@@ -201,7 +201,7 @@ void screen_check_handleTouch(void){
 	    glcd_putBox(b->x, b->y, C005FFF, b->width, b->height);
 	    screen_drawButton(b);
 	    screen_check_drawTotalPrice(WHITE);
-            wifi_transmit("submit");
+            wifi_sendOrder();
 	    screen_check_clear();
 	    glcd_putString(200, 240, MAGENTA, "Order submitted!");
 	    check_reset();
@@ -214,7 +214,7 @@ void screen_check_handleTouch(void){
 	    b = &button_page;
 	    glcd_putBox(b->x, b->y, CD75F00, b->width, b->height);
 	    screen_drawButton(b);
-            wifi_transmit("page");
+            wifi_pageServer();
 	}
         else if (screen_isWithinBounds(&t, &button_return)){
 	    b = &button_return;
@@ -225,7 +225,7 @@ void screen_check_handleTouch(void){
 }
 
 void screen_check_preparePacket(void){
-    uint8_t i;
+    unsigned int i;
 
     for (i = 0; i < check.length; i++) {
 	packet[2*i] = check.foods[i]->id;

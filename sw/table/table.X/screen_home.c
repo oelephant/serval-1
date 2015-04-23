@@ -49,7 +49,7 @@ void screen_home_handleTouch(void){
 	    b = &button_page;
 	    glcd_putBox(b->x, b->y, CD75F00, b->width, b->height);
 	    screen_drawButton(b);
-            wifi_transmit("page");
+            wifi_pageServer();
 	}
     }
 }

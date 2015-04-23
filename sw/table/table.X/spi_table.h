@@ -8,11 +8,9 @@
 #ifndef SPI_TABLE_H
 #define	SPI_TABLE_H
 
-#include <stdint.h>
-
 enum spi_deviceSelect{GRAPHIC, MEM, TOUCH, WIFI};
 
-uint8_t spi_exchange(int channel, uint8_t dataOut);
+char spi_exchange(int channel, char dataOut);
 void spi_init(void);
 void spi_open(unsigned int mode);
 

@@ -12,7 +12,7 @@
 
 #define MAX_CHECK_LENGTH 20
 
-struct Check {   struct Food *foods[MAX_CHECK_LENGTH]; uint8_t qty[MAX_CHECK_LENGTH]; uint8_t length; float totalPrice;};
+struct Check {   struct Food *foods[MAX_CHECK_LENGTH]; char qty[MAX_CHECK_LENGTH]; char length; float totalPrice;};
 
 extern struct Check check;
 

@@ -16,7 +16,6 @@
 
 #include <stdbool.h>       /* Includes true/false definition                  */
 #include <stddef.h>	// definition of NULL
-#include <stdint.h>        /* Includes uint16_t definition                    */
 #include <stdlib.h>     // itoa
 #include <string.h>     // strlen
 

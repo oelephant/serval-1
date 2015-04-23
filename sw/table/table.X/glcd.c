@@ -7,7 +7,7 @@
 #include "spi_table.h"
 #include <string.h>
 
-extern const uint8_t Tahoma19x21[];
+extern const char Tahoma19x21[];
 
 // Configures all the registers for the GLCD
 void glcd_configRegisters(void){
@@ -37,9 +37,9 @@ void glcd_configRegisters(void){
 }
 
 int glcd_configTouch(void){
-    const uint8_t DUMMY = 0;
-    uint8_t startAddress;
-    uint8_t reply[5];
+    const char DUMMY = 0;
+    char startAddress;
+    char reply[5];
 
     spi_open(TOUCH);
     spi_ss_toc = 0;	// enable
@@ -78,10 +78,10 @@ int glcd_configTouch(void){
 }
 
 struct TouchData glcd_getTouch(void){
-    static uint8_t lastPen;
-    const uint8_t DUMMY = 0;
-    uint8_t pen, x0, x1, y0, y1;
-    uint16_t x, y;
+    static char lastPen;
+    const char DUMMY = 0;
+    char pen, x0, x1, y0, y1;
+    int x, y;
     struct TouchData t;
 
     spi_open(TOUCH);
@@ -98,8 +98,8 @@ struct TouchData glcd_getTouch(void){
     x = x1<<7 | x0;
     y = y1<<7 | y0;
 
-    x = (uint16_t)((double)x / 4095.0 * GLCD_WIDTH);
-    y = GLCD_HEIGHT - (uint16_t)((double)y / 4095.0 * GLCD_HEIGHT);
+    x = (int)((double)x / 4095.0 * GLCD_WIDTH);
+    y = GLCD_HEIGHT - (int)((double)y / 4095.0 * GLCD_HEIGHT);
 
     if ((lastPen&1) == 0 && (pen&1) == 0){
 	t.pen = 1;
@@ -124,7 +124,7 @@ void glcd_init(void){
 
 void glcd_initLut1(){
     const int DEVICE = GRAPHIC;
-    uint32_t LUT_Address = 0x60000;
+    long LUT_Address = 0x60000;
     spi_ss_lcd = 0;
 
     // command
@@ -376,7 +376,7 @@ void glcd_initLut1(){
     spi_ss_lcd = 1;
 }
 
-void glcd_initLutColor(uint8_t r, uint8_t g, uint8_t b){
+void glcd_initLutColor(char r, char g, char b){
     const int DEVICE = GRAPHIC;
     spi_exchange(DEVICE, b);	// blue
     spi_exchange(DEVICE, g);	// green
@@ -384,19 +384,19 @@ void glcd_initLutColor(uint8_t r, uint8_t g, uint8_t b){
     spi_exchange(DEVICE, 0x00);	// null
 }
 
-void glcd_putBox(uint16_t x, uint16_t y, uint8_t color, uint16_t width, uint16_t height){
-    uint16_t i;
+void glcd_putBox(int x, int y, char color, int width, int height){
+    int i;
     for (i = y; i < y+height; i++){
 	glcd_putPixel(x, i, color, width);
     }
 }
 
-uint8_t glcd_putChar(uint16_t x, uint16_t y, uint8_t color, char c){
-    uint8_t fontWidth = 19; // each character starts at index at 3*fontWidth + 1
-    uint8_t fontHeight = 21;
-    uint8_t currentByte,byte, width;
-    uint16_t i,j,k;
-    uint16_t startIndex = (c - 32)*(1+fontWidth*ceil((float)fontHeight/8));	// font starts at ascii 32
+char glcd_putChar(int x, int y, char color, char c){
+    char fontWidth = 19; // each character starts at index at 3*fontWidth + 1
+    char fontHeight = 21;
+    char currentByte,byte, width;
+    int i,j,k;
+    int startIndex = (c - 32)*(1+fontWidth*ceil((float)fontHeight/8));	// font starts at ascii 32
     k = startIndex + 1;
     width = Tahoma19x21[k - 1];
     for (i = 0; i<fontWidth; i++){
@@ -414,13 +414,14 @@ uint8_t glcd_putChar(uint16_t x, uint16_t y, uint8_t color, char c){
     return width;
 }
 
-void glcd_putPixel(uint16_t x, uint16_t y, uint8_t color, uint32_t length){
-    glcd_writeVram((uint32_t)GLCD_WIDTH*y + x, color, length);
+void glcd_putPixel(int x, int y, char color, long length){
+    glcd_writeVram((long)GLCD_WIDTH*y + x, color, length);
 }
 
-void glcd_putString(uint16_t x, uint16_t y, uint8_t color, char *c){
-    uint8_t i,width;
-    uint16_t totalWidth = 0;
+void glcd_putString(int x, int y, char color, char *c){
+    char width;
+    unsigned int i;
+    int totalWidth = 0;
     for (i = 0; i < strlen(c); i++){
 	if (totalWidth > 400 && c[i-1] == ' '){
 	    x -= totalWidth;
@@ -433,9 +434,9 @@ void glcd_putString(uint16_t x, uint16_t y, uint8_t color, char *c){
     }
 }
 
-int glcd_readLut1(uint8_t offset, uint8_t length){
+int glcd_readLut1(char offset, char length){
     const int DEVICE = GRAPHIC;
-    const uint8_t DUMMY = 0;
+    const char DUMMY = 0;
     int i;
     int result[0xFF];
 
@@ -458,10 +459,10 @@ int glcd_readLut1(uint8_t offset, uint8_t length){
     return 1;
 }
 
-uint16_t glcd_readRegister(uint8_t offset){
+int glcd_readRegister(char offset){
     const int DEVICE = GRAPHIC;
-    const uint8_t DUMMY = 0;
-    uint16_t result = 0;
+    const char DUMMY = 0;
+    int result = 0;
 
     spi_ss_lcd = 0;
 
@@ -507,9 +508,9 @@ int glcd_readRegisters(void){
     return 1;
 }
 
-int glcd_readVram(uint32_t addr, uint8_t length){
+int glcd_readVram(long addr, char length){
     const int DEVICE = GRAPHIC;
-    const uint8_t DUMMY = 0;
+    const char DUMMY = 0;
     int i;
 
     int res[0xFF];
@@ -533,14 +534,14 @@ int glcd_readVram(uint32_t addr, uint8_t length){
     return 1;
 }
 
-uint8_t glcd_touchExchange(uint8_t value){
-    uint8_t result = spi_exchange(TOUCH, value);
+char glcd_touchExchange(char value){
+    char result = spi_exchange(TOUCH, value);
     __delay_us(400);
     return result;
 }
 
 // Writes to the registers of the GLCD
-void glcd_writeRegister(uint8_t offset, uint16_t val){
+void glcd_writeRegister(char offset, int val){
     const int DEVICE = GRAPHIC;
 
     spi_ss_lcd = 0;
@@ -561,9 +562,9 @@ void glcd_writeRegister(uint8_t offset, uint16_t val){
 
 }
 
-void glcd_writeVram(uint32_t addr, uint8_t lut_offset, uint32_t length){
+void glcd_writeVram(long addr, char lut_offset, long length){
     const int DEVICE = GRAPHIC;
-    uint32_t i;
+    long i;
 
     spi_ss_lcd = 0;
 

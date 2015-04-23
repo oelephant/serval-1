@@ -1,12 +1,15 @@
 #include "include.h"
 
+#include "check.h"
 #include "system.h"        /* System funct/params, like osc/peripheral config */
 #include "uc_pins.h"
 #include "spi_table.h"
 #include "wifi.h"
 
-uint8_t wifi_exchange(uint8_t value){
-    uint8_t result;
+extern struct Check check;
+
+char wifi_exchange(char value){
+    char result;
 
     spi_open(WIFI);
     spi_ss_wifi = 0;	// enable
@@ -16,9 +19,16 @@ uint8_t wifi_exchange(uint8_t value){
     return result;
 }
 
+void wifi_pageServer(void){
+    char msg[2];
+    msg[0] = OP_PAGE_SERVER;
+    msg[1] = TABLE_ID;
+    wifi_transmit(msg);
+}
+
 int wifi_read(){
-    const uint8_t DUMMY = 0xff;
-    uint8_t result[30];
+    const char DUMMY = 0xff;
+    char result[30];
     int i;
 
     for (i = 0; i < 30; i++){
@@ -28,11 +38,12 @@ int wifi_read(){
 }
 
 int wifi_transmit(char *message){
-    uint8_t i, checksum, value, messageLength;
-    uint8_t address[4] = {0xc0, 0xa8, 0x01, 0x32};
-    uint8_t destPort[2] = {0x26, 0x16};
-    uint8_t sourcePort[2] = {0x00, 0x00};
-    uint16_t packetLength;
+    unsigned int i;
+    char checksum, value, messageLength;
+    char address[4] = {0xc0, 0xa8, 0x01, 0x32};
+    char destPort[2] = {0x26, 0x16};
+    char sourcePort[2] = {0x00, 0x00};
+    int packetLength;
     messageLength = strlen(message);
     checksum = 0;
     packetLength = messageLength + 12;  // message bytes + 1x frame type, 1x frame id, 4x dest address, 2x dest port, 2x src port, 1x protocol, 1x transmit options
@@ -96,4 +107,15 @@ int wifi_transmit(char *message){
     wifi_exchange(0xff - checksum);
 
     return 1;
+}
+
+void wifi_sendOrder(void){
+    unsigned int i;
+    char msg[2+check.length];
+    msg[0] = OP_SEND_ORDER;
+    msg[1] = TABLE_ID;
+    for (i = 0; i < check.length; i++){
+	msg[i+2] = check.foods[i]->id;
+    }
+    wifi_transmit(msg);
 }
