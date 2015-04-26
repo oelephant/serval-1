@@ -12,12 +12,33 @@
 
 #include "object.h"
 
+// bg's
 #define BACKGROUND WHITE
+#define BTN_DOWN_BG C5FFF00
+#define BTN_GRAD1_BG C00FFAF
+#define BTN_GRAD2_BG C00D7AF
+#define BTN_GRAD3_BG C00AFAF
+#define BTN_GRAD4_BG C00FFAF
+#define BTN_PAGE_BG CFF8700
+#define BTN_RETURN_BG CAF5FAF
+#define BTN_SUBMIT_BG C0087FF
+#define BTN_UP_BG CFF5F5F
+#define BTN_VIEWCHECK_BG C0087FF
+
+// shader bg's
+#define BTN_DOWN_BG2 C87FF5F
+#define BTN_GRAD_BG2 C005FAF
+#define BTN_PAGE_BG2 CD75F00
+#define BTN_RETURN_BG2 CAF5FFF
+#define BTN_SUBMIT_BG2 C005FFF
+#define BTN_UP_BG2 CAF5FFF
+#define BTN_VIEWCHECK_BG2 C005FFF
 
 typedef enum {  HOME,
                 CATEGORIES,
                 ITEMS,
-                CHECK} Screens;
+                CHECK,
+                NUMBERPAD} Screens;
 
 extern struct Button button_up;
 extern struct Button button_down;

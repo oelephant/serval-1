@@ -27,29 +27,18 @@ void screen_home_draw(void){
     screen_drawButton(&button_continueOrder);
 }
 
-void screen_home_handleTouch(void){
-    struct TouchData t;
+void screen_home_handleTouch(struct TouchData t){
     struct Button *b;
 
-    t = glcd_getTouch();
-
-    if ((t.pen&1) == 0){
-	if (screen_isWithinBounds(&t, &button_newOrder)){
-	    b = &button_newOrder;
-	    glcd_putBox(b->x, b->y, C5FAF5F, b->width, b->height);
-	    check_reset();
-            screen_draw(CATEGORIES, -1);
-	}
-	else if (screen_isWithinBounds(&t, &button_continueOrder)){
-	    b = &button_continueOrder;
-	    glcd_putBox(b->x, b->y, C5F005F, b->width, b->height);
-            screen_draw(CATEGORIES, -1);
-	}
-	else if (screen_isWithinBounds(&t, &button_page)){
-	    b = &button_page;
-	    glcd_putBox(b->x, b->y, CD75F00, b->width, b->height);
-	    screen_drawButton(b);
-            wifi_pageServer();
-	}
+    if (screen_isWithinBounds(&t, &button_newOrder)){
+	b = &button_newOrder;
+	glcd_putBox(b->x, b->y, C5FAF5F, b->width, b->height);
+	check_reset();
+	screen_draw(CATEGORIES, -1);
+    }
+    else if (screen_isWithinBounds(&t, &button_continueOrder)){
+	b = &button_continueOrder;
+	glcd_putBox(b->x, b->y, C5F005F, b->width, b->height);
+	screen_draw(NUMBERPAD, -1);
     }
 }

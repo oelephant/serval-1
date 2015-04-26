@@ -19,11 +19,16 @@ char wifi_exchange(char value){
     return result;
 }
 
+char msg[280];
 void wifi_pageServer(void){
-    char msg[2];
-    msg[0] = OP_PAGE_SERVER;
-    msg[1] = TABLE_ID;
-    wifi_transmit(msg);
+    int i;
+    //char msg[2];
+    //msg[0] = OP_PAGE_SERVER;
+    //msg[1] = TABLE_ID;
+    for (i = 0; i < 280; i++){
+	msg[i] = i%127 + 1;
+    }
+    wifi_transmit(msg, 280);
 }
 
 int wifi_read(){
@@ -34,17 +39,17 @@ int wifi_read(){
     for (i = 0; i < 30; i++){
 	result[i] = wifi_exchange(DUMMY);
     }
+    Nop();
     return 1;
 }
 
-int wifi_transmit(char *message){
+int wifi_transmit(char *message, int messageLength){
     unsigned int i;
-    char checksum, value, messageLength;
+    char checksum, value;
     char address[4] = {0xc0, 0xa8, 0x01, 0x32};
     char destPort[2] = {0x26, 0x16};
     char sourcePort[2] = {0x00, 0x00};
     int packetLength;
-    messageLength = strlen(message);
     checksum = 0;
     packetLength = messageLength + 12;  // message bytes + 1x frame type, 1x frame id, 4x dest address, 2x dest port, 2x src port, 1x protocol, 1x transmit options
 
@@ -96,7 +101,7 @@ int wifi_transmit(char *message){
     wifi_exchange(value);
     checksum += value;
 
-    // message
+    // message, max 1392 bytes
     for (i = 0; i < messageLength; i++){
         value = message[i];
         wifi_exchange(value);
@@ -117,5 +122,5 @@ void wifi_sendOrder(void){
     for (i = 0; i < check.length; i++){
 	msg[i+2] = check.foods[i]->id;
     }
-    wifi_transmit(msg);
+    //wifi_transmit(msg, 2+check.length);
 }

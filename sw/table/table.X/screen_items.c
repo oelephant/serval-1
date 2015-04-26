@@ -20,13 +20,12 @@ static bool downEnabled;
 static struct Menu *menu;
 extern struct Check check;
 
-struct Button button_item1 = {10, 10, C00FFAF, 530, 110, "", WHITE};
-struct Button button_item2 = {10, 130, C00D7AF, 530, 110, "", WHITE};
-struct Button button_item3 = {10, 250, C00AFAF, 530, 110, "", WHITE};
+struct Button button_item1 = {10, 10, BTN_GRAD1_BG, 530, 110, "", WHITE};
+struct Button button_item2 = {10, 130, BTN_GRAD2_BG, 530, 110, "", WHITE};
+struct Button button_item3 = {10, 250, BTN_GRAD3_BG, 530, 110, "", WHITE};
 extern struct Button button_viewCheck;
 extern struct Button button_up;
 extern struct Button button_down;
-extern struct Button button_page;
 extern struct Button button_return;
 
 void screen_items_clear(void){
@@ -87,68 +86,60 @@ void screen_items_drawEntries(void){
     screen_items_updateUpDown();
 }
 
-void screen_items_handleTouch(void){
-    struct TouchData t;
+void screen_items_handleTouch(struct TouchData t){
     struct Button *b;
 
-    t = glcd_getTouch();
+    if (screen_isWithinBounds(&t, &button_item1)){
+	b = &button_item1;
+	screen_items_drawEntry(b, currentItemIndex, b->color);
+	screen_items_drawEntry(b, currentItemIndex, WHITE);
+	check_addItem(&menu->foods[currentItemIndex]);
+	//glcd_putString(b->x+450, b->y+80, WHITE, "Added");
+    }
+    else if (screen_isWithinBounds(&t, &button_item2)){
+	b = &button_item2;
+	screen_items_drawEntry(b, currentItemIndex+1, b->color);
+	screen_items_drawEntry(b, currentItemIndex+1, WHITE);
+	check_addItem(&menu->foods[currentItemIndex + 1]);
+	//glcd_putString(b->x+450, b->y+80, WHITE, "Added");
+    }
+    else if (screen_isWithinBounds(&t, &button_item3)){
+	b = &button_item3;
+	screen_items_drawEntry(b, currentItemIndex+2, b->color);
+	screen_items_drawEntry(b, currentItemIndex+2, WHITE);
+	check_addItem(&menu->foods[currentItemIndex + 2]);
+	//glcd_putString(b->x+450, b->y+80, WHITE, "Added");
+    }
+    else if (screen_isWithinBounds(&t, &button_up) && upEnabled){
+	b = &button_up;
+	glcd_putBox(b->x, b->y, BTN_UP_BG2, b->width, b->height);
+	screen_drawButton(b);
 
-    if ((t.pen&1) == 0){
-	if (screen_isWithinBounds(&t, &button_item1)){
-	    b = &button_item1;
-	    screen_items_drawEntry(b, currentItemIndex, b->color);
-	    screen_items_drawEntry(b, currentItemIndex, WHITE);
-	    check_addItem(&menu->foods[currentItemIndex]);
-	}
-	else if (screen_isWithinBounds(&t, &button_item2)){
-	    b = &button_item2;
-	    screen_items_drawEntry(b, currentItemIndex+1, b->color);
-	    screen_items_drawEntry(b, currentItemIndex+1, WHITE);
-	    check_addItem(&menu->foods[currentItemIndex + 1]);
-	}
-	else if (screen_isWithinBounds(&t, &button_item3)){
-	    b = &button_item3;
-	    screen_items_drawEntry(b, currentItemIndex+2, b->color);
-	    screen_items_drawEntry(b, currentItemIndex+2, WHITE);
-	    check_addItem(&menu->foods[currentItemIndex + 2]);
-	}
-	else if (screen_isWithinBounds(&t, &button_up) && upEnabled){
-	    b = &button_up;
-	    glcd_putBox(b->x, b->y, CAF5FFF, b->width, b->height);
-	    screen_drawButton(b);
+	screen_items_clearEntries();
+	currentItemIndex += 3;
+	screen_items_drawEntries();
+    }
+    else if (screen_isWithinBounds(&t, &button_down) && downEnabled){
+	b = &button_down;
+	glcd_putBox(b->x, b->y, BTN_DOWN_BG2, b->width, b->height);
+	screen_drawButton(b);
 
+	if (currentItemIndex > 2){
 	    screen_items_clearEntries();
-	    currentItemIndex += 3;
+	    currentItemIndex -=3;
 	    screen_items_drawEntries();
 	}
-	else if (screen_isWithinBounds(&t, &button_down) && downEnabled){
-	    b = &button_down;
-	    glcd_putBox(b->x, b->y, C87FF5F, b->width, b->height);
-	    screen_drawButton(b);
-
-	    if (currentItemIndex > 2){
-		screen_items_clearEntries();
-		currentItemIndex -=3;
-		screen_items_drawEntries();
-	    }
-	}
-	else if (screen_isWithinBounds(&t, &button_viewCheck)){
-	    b = &button_viewCheck;
-	    glcd_putBox(b->x, b->y, C005FFF, b->width, b->height);
-	    screen_drawButton(b);
-	    screen_draw(CHECK, -1);
-	}
-	else if (screen_isWithinBounds(&t, &button_page)){
-	    b = &button_page;
-	    glcd_putBox(b->x, b->y, CD75F00, b->width, b->height);
-	    screen_drawButton(b);
-            wifi_pageServer();
-	}
-        else if (screen_isWithinBounds(&t, &button_return)){
-	    b = &button_return;
-	    glcd_putBox(b->x, b->y, CAF5FFF, b->width, b->height);
-            screen_draw(CATEGORIES, -1);
-	}
+    }
+    else if (screen_isWithinBounds(&t, &button_viewCheck)){
+	b = &button_viewCheck;
+	glcd_putBox(b->x, b->y, BTN_VIEWCHECK_BG2, b->width, b->height);
+	screen_drawButton(b);
+	screen_draw(CHECK, -1);
+    }
+    else if (screen_isWithinBounds(&t, &button_return)){
+	b = &button_return;
+	glcd_putBox(b->x, b->y, BTN_RETURN_BG2, b->width, b->height);
+	screen_draw(CATEGORIES, -1);
     }
 }
 

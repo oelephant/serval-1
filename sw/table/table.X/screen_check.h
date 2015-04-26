@@ -17,7 +17,7 @@ void screen_check_draw(void);
 void screen_check_drawEntry(struct Button *b, int index, int color);
 void screen_check_drawEntries(void);
 void screen_check_drawTotalPrice(int color);
-void screen_check_handleTouch(void);
+void screen_check_handleTouch(struct TouchData t);
 void screen_check_preparePacket(void);
 void screen_check_updateUpDown(void);
 

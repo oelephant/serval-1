@@ -18,14 +18,13 @@ static bool upEnabled;
 static bool downEnabled;
 extern struct Check check;
 
-struct Button button_itemA = {10, 10, C00FFAF, 530, 80, "", WHITE};
-struct Button button_itemB = {10, 100, C00D7AF, 530, 80, "", WHITE};
-struct Button button_itemC = {10, 190, C00AFAF, 530, 80, "", WHITE};
-struct Button button_itemD = {10, 280, C00D7AF, 530, 80, "", WHITE};
-struct Button button_submit = {410, 390, C0087FF, 220, 80, "SUBMIT", WHITE};
+struct Button button_itemA = {10, 10, BTN_GRAD1_BG, 530, 80, "", WHITE};
+struct Button button_itemB = {10, 100, BTN_GRAD2_BG, 530, 80, "", WHITE};
+struct Button button_itemC = {10, 190, BTN_GRAD3_BG, 530, 80, "", WHITE};
+struct Button button_itemD = {10, 280, BTN_GRAD4_BG, 530, 80, "", WHITE};
+struct Button button_submit = {410, 390, BTN_SUBMIT_BG, 220, 80, "SUBMIT", WHITE};
 extern struct Button button_up;
 extern struct Button button_down;
-extern struct Button button_page;
 extern struct Button button_return;
 
 
@@ -100,127 +99,116 @@ void screen_check_drawTotalPrice(int color){
     glcd_putString(b->x+110, b->y+b->height/2, color, price);
 }
 
-void screen_check_handleTouch(void){
-    struct TouchData t;
+void screen_check_handleTouch(struct TouchData t){
     struct Button *b;
     unsigned int index;
 
-    t = glcd_getTouch();
-
-    if ((t.pen&1) == 0){
-	if (screen_isWithinBounds(&t, &button_itemA)){
-	    b = &button_itemA;
-	    index = currentItemIndex;
-	    screen_check_drawTotalPrice(button_submit.color);
-	    if (check.qty[index] == 1){
-		screen_check_clearEntries();
-		check_removeItem(check.foods[index]);
-		screen_check_drawEntries();
-	    }
-	    else{
-		screen_check_drawEntry(b, index, b->color);
-		check_removeItem(check.foods[index]);
-		screen_check_drawEntry(b, index, WHITE);
-	    }
-	    screen_check_drawTotalPrice(WHITE);
-	    screen_check_updateUpDown();
-	}
-	else if (screen_isWithinBounds(&t, &button_itemB)){
-	    b = &button_itemB;
-	    index = currentItemIndex+1;
-	    screen_check_drawTotalPrice(button_submit.color);
-	    if (check.qty[index] == 1){
-		screen_check_clearEntries();
-		check_removeItem(check.foods[index]);
-		screen_check_drawEntries();
-	    }
-	    else{
-		screen_check_drawEntry(b, index, b->color);
-		check_removeItem(check.foods[index]);
-		screen_check_drawEntry(b, index, WHITE);
-	    }
-	    screen_check_drawTotalPrice(WHITE);
-	    screen_check_updateUpDown();
-	}
-	else if (screen_isWithinBounds(&t, &button_itemC)){
-	    b = &button_itemC;
-	    index = currentItemIndex+2;
-	    screen_check_drawTotalPrice(button_submit.color);
-	    if (check.qty[index] == 1){
-		screen_check_clearEntries();
-		check_removeItem(check.foods[index]);
-		screen_check_drawEntries();
-	    }
-	    else{
-		screen_check_drawEntry(b, index, b->color);
-		check_removeItem(check.foods[index]);
-		screen_check_drawEntry(b, index, WHITE);
-	    }
-	    screen_check_drawTotalPrice(WHITE);
-	    screen_check_updateUpDown();
-	}
-	else if (screen_isWithinBounds(&t, &button_itemD)){
-	    b = &button_itemD;
-	    index = currentItemIndex+3;
-	    screen_check_drawTotalPrice(button_submit.color);
-	    if (check.qty[index] == 1){
-		screen_check_clearEntries();
-		check_removeItem(check.foods[index]);
-		screen_check_drawEntries();
-	    }
-	    else{
-		screen_check_drawEntry(b, index, b->color);
-		check_removeItem(check.foods[index]);
-		screen_check_drawEntry(b, index, WHITE);
-	    }
-	    screen_check_drawTotalPrice(WHITE);
-	    screen_check_updateUpDown();
-	}
-	else if (screen_isWithinBounds(&t, &button_up) && upEnabled){
-	    b = &button_up;
-	    glcd_putBox(b->x, b->y, CAF5FFF, b->width, b->height);
-	    screen_drawButton(b);
-
+    if (screen_isWithinBounds(&t, &button_itemA)){
+	b = &button_itemA;
+	index = currentItemIndex;
+	screen_check_drawTotalPrice(button_submit.color);
+	if (check.qty[index] == 1){
 	    screen_check_clearEntries();
-	    currentItemIndex += 4;
+	    check_removeItem(check.foods[index]);
 	    screen_check_drawEntries();
 	}
-	else if (screen_isWithinBounds(&t, &button_down) && downEnabled){
-	    b = &button_down;
-	    glcd_putBox(b->x, b->y, C87FF5F, b->width, b->height);
-	    screen_drawButton(b);
+	else{
+	    screen_check_drawEntry(b, index, b->color);
+	    check_removeItem(check.foods[index]);
+	    screen_check_drawEntry(b, index, WHITE);
+	}
+	screen_check_drawTotalPrice(WHITE);
+	screen_check_updateUpDown();
+    }
+    else if (screen_isWithinBounds(&t, &button_itemB)){
+	b = &button_itemB;
+	index = currentItemIndex+1;
+	screen_check_drawTotalPrice(button_submit.color);
+	if (check.qty[index] == 1){
+	    screen_check_clearEntries();
+	    check_removeItem(check.foods[index]);
+	    screen_check_drawEntries();
+	}
+	else{
+	    screen_check_drawEntry(b, index, b->color);
+	    check_removeItem(check.foods[index]);
+	    screen_check_drawEntry(b, index, WHITE);
+	}
+	screen_check_drawTotalPrice(WHITE);
+	screen_check_updateUpDown();
+    }
+    else if (screen_isWithinBounds(&t, &button_itemC)){
+	b = &button_itemC;
+	index = currentItemIndex+2;
+	screen_check_drawTotalPrice(button_submit.color);
+	if (check.qty[index] == 1){
+	    screen_check_clearEntries();
+	    check_removeItem(check.foods[index]);
+	    screen_check_drawEntries();
+	}
+	else{
+	    screen_check_drawEntry(b, index, b->color);
+	    check_removeItem(check.foods[index]);
+	    screen_check_drawEntry(b, index, WHITE);
+	}
+	screen_check_drawTotalPrice(WHITE);
+	screen_check_updateUpDown();
+    }
+    else if (screen_isWithinBounds(&t, &button_itemD)){
+	b = &button_itemD;
+	index = currentItemIndex+3;
+	screen_check_drawTotalPrice(button_submit.color);
+	if (check.qty[index] == 1){
+	    screen_check_clearEntries();
+	    check_removeItem(check.foods[index]);
+	    screen_check_drawEntries();
+	}
+	else{
+	    screen_check_drawEntry(b, index, b->color);
+	    check_removeItem(check.foods[index]);
+	    screen_check_drawEntry(b, index, WHITE);
+	}
+	screen_check_drawTotalPrice(WHITE);
+	screen_check_updateUpDown();
+    }
+    else if (screen_isWithinBounds(&t, &button_up) && upEnabled){
+	b = &button_up;
+	glcd_putBox(b->x, b->y, BTN_UP_BG2, b->width, b->height);
+	screen_drawButton(b);
 
-	    if (currentItemIndex > 2){
-		screen_check_clearEntries();
-		currentItemIndex -=4;
-		screen_check_drawEntries();
-	    }
+	screen_check_clearEntries();
+	currentItemIndex += 4;
+	screen_check_drawEntries();
+    }
+    else if (screen_isWithinBounds(&t, &button_down) && downEnabled){
+	b = &button_down;
+	glcd_putBox(b->x, b->y, BTN_DOWN_BG2, b->width, b->height);
+	screen_drawButton(b);
+
+	if (currentItemIndex > 2){
+	    screen_check_clearEntries();
+	    currentItemIndex -=4;
+	    screen_check_drawEntries();
 	}
-	else if (screen_isWithinBounds(&t, &button_submit)){
-	    b = &button_submit;
-	    glcd_putBox(b->x, b->y, C005FFF, b->width, b->height);
-	    screen_drawButton(b);
-	    screen_check_drawTotalPrice(WHITE);
-            wifi_sendOrder();
-	    screen_check_clear();
-	    glcd_putString(200, 240, MAGENTA, "Order submitted!");
-	    check_reset();
-	    screen_check_preparePacket();
-            wifi_transmit(packet);
-	    __delay_ms(2000);
-	    screen_draw(HOME, 0);
-	}
-	else if (screen_isWithinBounds(&t, &button_page)){
-	    b = &button_page;
-	    glcd_putBox(b->x, b->y, CD75F00, b->width, b->height);
-	    screen_drawButton(b);
-            wifi_pageServer();
-	}
-        else if (screen_isWithinBounds(&t, &button_return)){
-	    b = &button_return;
-	    glcd_putBox(b->x, b->y, CAF5FFF, b->width, b->height);
-            screen_draw(CATEGORIES, -1);
-	}
+    }
+    else if (screen_isWithinBounds(&t, &button_submit)){
+	b = &button_submit;
+	glcd_putBox(b->x, b->y, BTN_SUBMIT_BG2, b->width, b->height);
+	screen_drawButton(b);
+	screen_check_drawTotalPrice(WHITE);
+	wifi_sendOrder();
+	screen_check_clear();
+	glcd_putString(200, 240, MAGENTA, "Order submitted!");
+	check_reset();
+	screen_check_preparePacket();
+	wifi_sendOrder();
+	__delay_ms(2000);
+	screen_draw(HOME, 0);
+    }
+    else if (screen_isWithinBounds(&t, &button_return)){
+	b = &button_return;
+	glcd_putBox(b->x, b->y, BTN_RETURN_BG2, b->width, b->height);
+	screen_draw(CATEGORIES, -1);
     }
 }
 

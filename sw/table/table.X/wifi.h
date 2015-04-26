@@ -23,7 +23,7 @@
 char wifi_exchange(char value);
 void wifi_pageServer(void);
 int wifi_read();
-int wifi_transmit(char *message);
+int wifi_transmit(char *message, int messageLength);
 void wifi_sendOrder(void);
 
 #endif	/* WIFI_H */

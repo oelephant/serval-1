@@ -12,7 +12,7 @@
 
 void screen_home_clear(void);
 void screen_home_draw(void);
-void screen_home_handleTouch(void);
+void screen_home_handleTouch(struct TouchData t);
 
 #endif	/* SCREEN_HOME_H */
 

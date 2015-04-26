@@ -21,5 +21,6 @@ struct Button { int x; int y;
 struct Food {   int id; char* name; char* desc; int category; float price;};
 
 struct Menu {   struct Food foods[20]; int length;};
+
 #endif	/* OBJECT_H */
 

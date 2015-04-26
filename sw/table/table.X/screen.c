@@ -6,12 +6,14 @@
 #include "screen_check.h"
 #include "screen_home.h"
 #include "screen_items.h"
+#include "screen_numberpad.h"
+#include "wifi.h"
 
-struct Button button_up = {550, 10, CFF5F5F, 80, 170, "(U)", WHITE};
-struct Button button_down = {550, 190, C5FFF00, 80, 170, "(D)", WHITE};
-struct Button button_page = {180, 390, CFF8700, 220, 80, "PAGE SERVER", WHITE};
-struct Button button_return = {10, 390, CAF5FAF, 160, 80, "BACK", WHITE};
-struct Button button_viewCheck = {410, 390, C0087FF, 220, 80, "REVIEW CHECK", WHITE};
+struct Button button_up = {550, 10, BTN_UP_BG, 80, 170, "(U)", WHITE};
+struct Button button_down = {550, 190, BTN_DOWN_BG, 80, 170, "(D)", WHITE};
+struct Button button_page = {180, 390, BTN_PAGE_BG, 220, 80, "PAGE SERVER", WHITE};
+struct Button button_return = {10, 390, BTN_RETURN_BG, 160, 80, "BACK", WHITE};
+struct Button button_viewCheck = {410, 390, BTN_VIEWCHECK_BG, 220, 80, "REVIEW CHECK", WHITE};
 static int currentScreen = HOME;
 
 void screen_draw(int screen, int parameter){
@@ -27,6 +29,9 @@ void screen_draw(int screen, int parameter){
     else if (currentScreen == CHECK){
 	screen_check_clear();
     }
+    else if (currentScreen == NUMBERPAD){
+	screen_numberpad_clear();
+    }
 
     if (screen == HOME){
         screen_home_draw();
@@ -39,6 +44,9 @@ void screen_draw(int screen, int parameter){
     }
     else if (screen == CHECK){
         screen_check_draw();
+    }
+    else if (screen == NUMBERPAD){
+        screen_numberpad_draw();
     }
 
     currentScreen = screen;
@@ -57,17 +65,36 @@ void screen_drawButton(struct Button *b){
 }
 
 void screen_handleTouch(void){
+    struct TouchData t;
+    struct Button *b;
+    t = glcd_getTouch();
+
+    if ((t.pen&1) != 0){
+	return;
+    }
+
+    if (screen_isWithinBounds(&t, &button_page)){
+	b = &button_page;
+	glcd_putBox(b->x, b->y, BTN_PAGE_BG2, b->width, b->height);
+	screen_drawButton(b);
+	wifi_pageServer();
+	return;
+    }
+
     if (currentScreen == HOME){
-        screen_home_handleTouch();
+        screen_home_handleTouch(t);
     }
     else if (currentScreen == CATEGORIES){
-        screen_categories_handleTouch();
+        screen_categories_handleTouch(t);
     }
     else if (currentScreen == ITEMS){
-        screen_items_handleTouch();
+        screen_items_handleTouch(t);
     }
     else if (currentScreen == CHECK){
-        screen_check_handleTouch();
+        screen_check_handleTouch(t);
+    }
+    else if (currentScreen == NUMBERPAD){
+        screen_numberpad_handleTouch(t);
     }
 }
 

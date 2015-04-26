@@ -26,6 +26,7 @@
       <itemPath>menu.h</itemPath>
       <itemPath>check.h</itemPath>
       <itemPath>screen_check.h</itemPath>
+      <itemPath>screen_numberpad.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -53,6 +54,7 @@
       <itemPath>menu.c</itemPath>
       <itemPath>check.c</itemPath>
       <itemPath>screen_check.c</itemPath>
+      <itemPath>screen_numberpad.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

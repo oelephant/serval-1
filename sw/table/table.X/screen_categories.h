@@ -12,7 +12,7 @@
 
 void screen_categories_clear(void);
 void screen_categories_draw(void);
-void screen_categories_handleTouch(void);
+void screen_categories_handleTouch(struct TouchData t);
 
 #endif	/* SCREEN_ORDER_H */
 
