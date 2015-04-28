@@ -1,3 +1,7 @@
+/*  wifi.c
+    created by Ellen Fluehr
+ */
+
 #include "include.h"
 
 #include "check.h"
@@ -8,6 +12,13 @@
 
 extern struct Check check;
 
+/* parameters
+ *  value: data to send to the wifi
+ * return
+ *  data received from the wifi
+ * purpose
+ *  performs 8-bit SPI exchange with the wifi
+ */
 char wifi_exchange(char value){
     char result;
 
@@ -19,6 +30,13 @@ char wifi_exchange(char value){
     return result;
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  submits a wifi request to page the server
+ */
 char msg[280];
 void wifi_pageServer(void){
     int i;
@@ -31,6 +49,13 @@ void wifi_pageServer(void){
     wifi_transmit(msg, 280);
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  TODO: comment
+ */
 int wifi_read(){
     const char DUMMY = 0xff;
     char result[30];
@@ -43,6 +68,14 @@ int wifi_read(){
     return 1;
 }
 
+/* parameters
+ *  message: the message to transmit
+ *  messageLength: the size of the message to transmit
+ * return
+ *  none
+ * purpose
+ *  submits a wifi message to the controller
+ */
 int wifi_transmit(char *message, int messageLength){
     unsigned int i;
     char checksum, value;
@@ -114,6 +147,13 @@ int wifi_transmit(char *message, int messageLength){
     return 1;
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  submits a wifi check
+ */
 void wifi_sendOrder(void){
     unsigned int i;
     char msg[2+check.length];

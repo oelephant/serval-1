@@ -1,6 +1,6 @@
 /* 
  * File:   font.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on April 17, 2015, 5:09 PM
  */

@@ -1,6 +1,6 @@
 /* 
  * File:   spi_table.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on March 25, 2015, 3:49 PM
  */

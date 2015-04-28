@@ -1,3 +1,7 @@
+/*  check.c
+    created by Ellen Fluehr
+ */
+
 #include "include.h"
 
 #include "object.h"
@@ -5,6 +9,13 @@
 
 struct Check check;
 
+/* parameters
+ *  food: food item to add to the check
+ * return
+ *  none
+ * purpose
+ *  adds a food to the check
+ */
 void check_addItem(struct Food *food){
     unsigned int i;
     if (check.length > MAX_CHECK_LENGTH){
@@ -24,11 +35,25 @@ void check_addItem(struct Food *food){
     check.length++;
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  clears the check
+ */
 void check_reset(void){
     check.length = 0;
     check.totalPrice = 0;
 }
 
+/* parameters
+ *  food: food item to remove from the check
+ * return
+ *  none
+ * purpose
+ *  removes a food item from the check
+ */
 void check_removeItem(struct Food *food){
     unsigned int i,j;
     for (i = 0; i < check.length; i++){

@@ -1,6 +1,8 @@
-// TODO: actual prices
+/*  screen_items.c
+    created by Ellen Fluehr
+ */
+
 // TODO: remove blank items
-// TODO: allow wrapping descriptions
 
 #include "include.h"
 
@@ -28,6 +30,13 @@ extern struct Button button_up;
 extern struct Button button_down;
 extern struct Button button_return;
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  replaces screen-specific objects with background color
+ */
 void screen_items_clear(void){
     struct Button *b;
     b = &button_item1;
@@ -46,12 +55,26 @@ void screen_items_clear(void){
     glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  writes over text on item entries with button background color
+ */
 void screen_items_clearEntries(void){
     screen_items_drawEntry(&button_item1, currentItemIndex, button_item1.color);
     screen_items_drawEntry(&button_item2, currentItemIndex+1, button_item2.color);
     screen_items_drawEntry(&button_item3, currentItemIndex+2, button_item3.color);
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  places screen-specific objects
+ */
 void screen_items_draw(int category){
     if (category != -1){
 	menu = menu_getRoot(category);
@@ -67,6 +90,15 @@ void screen_items_draw(int category){
     screen_drawButton(&button_return);
 }
 
+/* parameters
+ *  b: the button to draw on
+ *  index: the index of the current item in the menu
+ *  color: the text color to use
+ * return
+ *  none
+ * purpose
+ *  draws the text for the selected menu entry
+ */
 void screen_items_drawEntry(struct Button *b, int index, int color){
     char price[6];
     if (index < menu->length){
@@ -78,6 +110,13 @@ void screen_items_drawEntry(struct Button *b, int index, int color){
     }
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  draws the text for menu entries
+ */
 void screen_items_drawEntries(void){
     screen_items_drawEntry(&button_item1, currentItemIndex, WHITE);
     screen_items_drawEntry(&button_item2, currentItemIndex+1, WHITE);
@@ -86,6 +125,13 @@ void screen_items_drawEntries(void){
     screen_items_updateUpDown();
 }
 
+/* parameters
+ *  t: last touch data
+ * return
+ *  none
+ * purpose
+ *  responds to touch signals on screen-specific objects
+ */
 void screen_items_handleTouch(struct TouchData t){
     struct Button *b;
 
@@ -143,6 +189,13 @@ void screen_items_handleTouch(struct TouchData t){
     }
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  draws or erases the up/down scroll buttons depending on whether there are more items to view
+ */
 void screen_items_updateUpDown(void){    
     if (menu->length > (currentItemIndex + 3) && upEnabled == false){
 	// draw the up button

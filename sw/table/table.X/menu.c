@@ -1,3 +1,7 @@
+/*  menu.c
+    created by Ellen Fluehr
+ */
+
 #include "include.h"
 
 #include "menu.h"
@@ -5,6 +9,17 @@
 
 static struct Menu menu1, menu2, menu3, menu4;
 
+/* parameters
+ *  id: the food's id
+ *  name: the food's name
+ *  desc: the food's description
+ *  category: the food's category
+ *  price: the food's price
+ * return
+ *  none
+ * purpose
+ *  adds a food to the menu
+ */
 void menu_addItem(int id, char* name, char* desc, int category, float price){
     struct Menu *m;
     if (category == ENTREE){
@@ -32,6 +47,13 @@ void menu_addItem(int id, char* name, char* desc, int category, float price){
     m->length++;
 }
 
+/* parameters
+ *  category: the category of the menu to retrieve
+ * return
+ *  the menu of the selected category
+ * purpose
+ *  retrieves a reference to the desired menu
+ */
 struct Menu * menu_getRoot(int category){
     if (category == ENTREE){
 	return &menu1;
@@ -47,6 +69,13 @@ struct Menu * menu_getRoot(int category){
     }
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  initializes the menu
+ */
 void menu_init(void){
     menu_addItem(1, "Toast", "is toasty and has quite a long description that needs to wrap around, perhaps even over as many as three lines", ENTREE, 11.12);
     menu_addItem(2, "Eggs", "are eggy", ENTREE, 23.11);

@@ -1,6 +1,6 @@
 /* 
  * File:   screen_items.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on April 18, 2015, 6:43 PM
  */

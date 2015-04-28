@@ -1,3 +1,7 @@
+/*  user.c
+    created by Ellen Fluehr
+ */
+
 // Ref: http://www.geeksforgeeks.org/convert-floating-point-number-string/
 
 /******************************************************************************/
@@ -22,6 +26,13 @@
 
 /* <Initialize variables in user.h and insert code for user algorithms.> */
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  initializes ports and pps
+ */
 void InitApp(void) {
     /* Setup analog functionality and port direction */
     ANSB = 0; // digital io
@@ -53,7 +64,14 @@ void InitApp(void) {
     iPPSOutput(OUT_PIN_PPS_RP22, OUT_FN_PPS_SCK2OUT); // remap SCK2 to spi2_sclk
 }
 
-// reverses a string 'str' of length 'len'
+/* parameters
+ *  str: the string
+ *  len: the length
+ * return
+ *  none
+ * purpose
+ *  reverses a string 'str' of length 'len'
+ */
 void reverse(char *str, int len)
 {
     int i=0, j=len-1, temp;
@@ -66,9 +84,17 @@ void reverse(char *str, int len)
     }
 }
 
- // Converts a given integer x to string str[].  d is the number
- // of digits required in output. If d is more than the number
- // of digits in x, then 0s are added at the beginning.
+/* parameters
+ *  x: the integer
+ *  str: the string
+ *  d: number of digits in output
+ * return
+ *  none
+ * purpose
+ *  Converts a given integer x to string str[].  d is the number
+    of digits required in output. If d is more than the number
+    of digits in x, then 0s are added at the beginning.
+ */
 int intToStr(int x, char str[], int d)
 {
     int i = 0;
@@ -88,7 +114,15 @@ int intToStr(int x, char str[], int d)
     return i;
 }
 
-// Converts a floating point number to string.
+/* parameters
+ *  n: the float
+ *  res: where to store the result
+ *  afterpoint: how many digits after the decimal
+ * return
+ *  none
+ * purpose
+ *  Converts a floating point number to string.
+ */
 void ftoa(float n, char *res, int afterpoint)
 {
     // Extract integer part

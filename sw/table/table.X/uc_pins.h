@@ -1,6 +1,6 @@
 /*
  * File:   uc_pins.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on March 25, 2015, 3:11 PM
  */

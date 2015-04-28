@@ -1,6 +1,6 @@
 /* 
  * File:   screen.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on April 13, 2015, 9:35 PM
  */

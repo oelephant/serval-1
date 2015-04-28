@@ -1,3 +1,7 @@
+/*  screen_home.c
+    created by Ellen Fluehr
+ */
+
 #include "include.h"
 
 #include "check.h"
@@ -14,6 +18,13 @@ struct Button button_continueOrder = {325, 150, CAF005F, 250, 180, "CONTINUE ORD
 extern struct Button button_page;
 extern struct Check check;
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  replaces screen-specific objects with background color
+ */
 void screen_home_clear(void){
     struct Button *b = &button_newOrder;
     glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
@@ -21,12 +32,26 @@ void screen_home_clear(void){
     glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  places screen-specific objects
+ */
 void screen_home_draw(void){
     screen_drawButton(&button_page);
     screen_drawButton(&button_newOrder);
     screen_drawButton(&button_continueOrder);
 }
 
+/* parameters
+ *  t: last touch data
+ * return
+ *  none
+ * purpose
+ *  responds to touch signals on screen-specific objects
+ */
 void screen_home_handleTouch(struct TouchData t){
     struct Button *b;
 

@@ -1,6 +1,6 @@
 /* 
  * File:   include.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on April 17, 2015, 2:41 PM
  */

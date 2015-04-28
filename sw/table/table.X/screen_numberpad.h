@@ -1,6 +1,6 @@
 /* 
  * File:   screen_numberpad.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on April 23, 2015, 9:20 PM
  */

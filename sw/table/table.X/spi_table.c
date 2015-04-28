@@ -1,5 +1,10 @@
+/*  spi_table.c
+    created by Ellen Fluehr
+ */
+
 // Notes:
 // Max graphic SPI freq: 33 MHz / period 30 ns
+// Max wifi SPI freq: 6 MHz / period 30 ns
 // Max touch SPI freq: 900 kHz
 #define USE_AND_OR
 
@@ -20,6 +25,14 @@ UINT wifi_SPICON1Value;
 UINT wifi_SPICON2Value;
 UINT wifi_SPISTATValue;
 
+/* parameters
+ *  device: device to communicate with
+ *  dataOut: data to send to device
+ * return
+ *  data received from device
+ * purpose
+ *  performs 8-bit SPI exchange with a selected device
+ */
 char spi_exchange(int device, char dataOut){
     char result;
     if (device == GRAPHIC){
@@ -36,6 +49,13 @@ char spi_exchange(int device, char dataOut){
     return result;
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  initializes SPI configurations for ech device
+ */
 void spi_init(void){
     // SPI config for the graphics controller
     graphic_SPICON1Value = ENABLE_SCK_PIN | ENABLE_SDO_PIN | SPI_MODE8_ON
@@ -61,6 +81,13 @@ void spi_init(void){
     currentlyOpen = GRAPHIC;
 }
 
+/* parameters
+ *  device: device to communicate with
+ * return
+ *  none
+ * purpose
+ *  open the SPI module for the selected device, if not already open
+ */
 void spi_open(unsigned int device){
     spi_ss_lcd = 1; // disable
     spi_ss_mem = 1; // disable

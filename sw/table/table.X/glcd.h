@@ -1,6 +1,6 @@
 /* 
  * File:   glcd.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on March 13, 2015, 3:55 PM
  */

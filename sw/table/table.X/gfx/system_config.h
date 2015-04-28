@@ -1,6 +1,6 @@
 /* 
  * File:   system_config.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on April 9, 2015, 5:53 PM
  */

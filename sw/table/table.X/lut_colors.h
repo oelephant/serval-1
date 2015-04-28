@@ -1,6 +1,6 @@
 /* 
  * File:   lut_colors.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on April 10, 2015, 4:24 PM
  */

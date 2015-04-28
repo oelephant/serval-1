@@ -1,3 +1,7 @@
+/*  screen.c
+    created by Ellen Fluehr
+ */
+
 #include "glcd.h"
 #include "lut_colors.h"
 #include "object.h"
@@ -16,6 +20,14 @@ struct Button button_return = {10, 390, BTN_RETURN_BG, 160, 80, "BACK", WHITE};
 struct Button button_viewCheck = {410, 390, BTN_VIEWCHECK_BG, 220, 80, "REVIEW CHECK", WHITE};
 static int currentScreen = HOME;
 
+/* parameters
+ *  screen: which screen to draw
+ *  parameter: value to pass to the screen
+ * return
+ *  none
+ * purpose
+ *  places screen-specific objects
+ */
 void screen_draw(int screen, int parameter){
     if (currentScreen == HOME){
         screen_home_clear();
@@ -52,18 +64,39 @@ void screen_draw(int screen, int parameter){
     currentScreen = screen;
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  fills the entire screen with the background color
+ */
 void screen_drawBackground(void){
     glcd_writeVram(0, BACKGROUND, (long)GLCD_WIDTH*GLCD_HEIGHT);
     glcd_putBox(20, 375, CAFFFFF, GLCD_WIDTH-40, 2);
     glcd_putBox(20, 377, CAFAFFF, GLCD_WIDTH-40, 2);
 }
 
+/* parameters
+ *  b: button to draw
+ * return
+ *  none
+ * purpose
+ *  draws a button on the screen using the passed struct's data
+ */
 void screen_drawButton(struct Button *b){
     int horizontalOffset = 20;	// TODO: centering algorithm
     glcd_putBox(b->x, b->y, b->color, b->width, b->height);
     glcd_putString(b->x+horizontalOffset, b->y+b->height/2, b->textColor, b->text);
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  responds to touch signals on screen-specific objects
+ */
 void screen_handleTouch(void){
     struct TouchData t;
     struct Button *b;
@@ -98,6 +131,14 @@ void screen_handleTouch(void){
     }
 }
 
+/* parameters
+ *  t: touch data
+ *  b: button to check
+ * return
+ *  whether the touch is within the passed button
+ * purpose
+ *  determines if the touch data is within the bounds of the passed button
+ */
 bool screen_isWithinBounds(struct TouchData *t, struct Button *b){
     if (t->x > b->x && t->x < b->x+b->width
 	    && t->y > b->y && t->y < b->y+b->height){

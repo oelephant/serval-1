@@ -1,3 +1,7 @@
+/*  screen_numberpad.c
+    created by Ellen Fluehr
+ */
+
 #include "include.h"
 
 #include "glcd.h"
@@ -22,6 +26,13 @@ extern struct Button button_return;
 static char code[5];
 static int currentIndex = 0;
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  replaces screen-specific objects with background color
+ */
 void screen_numberpad_clear(void){
     struct Button *b = &button_n1;
     glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
@@ -51,6 +62,14 @@ void screen_numberpad_clear(void){
     glcd_putChar(100+20*3, 40, WHITE, code[3]);
     currentIndex = 0;
 }
+
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  places screen-specific objects
+ */
 void screen_numberpad_draw(void){
     screen_drawButton(&button_n1);
     screen_drawButton(&button_n2);
@@ -64,6 +83,14 @@ void screen_numberpad_draw(void){
     screen_drawButton(&button_return);
     screen_drawButton(&button_submit);
 }
+
+/* parameters
+ *  t: last touch data
+ * return
+ *  none
+ * purpose
+ *  responds to touch signals on screen-specific objects
+ */
 void screen_numberpad_handleTouch(struct TouchData t){
     struct Button *b;
     bool isWithinNumber = false;

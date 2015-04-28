@@ -1,6 +1,6 @@
 /* 
  * File:   menu.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on April 18, 2015, 8:47 PM
  */

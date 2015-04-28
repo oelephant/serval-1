@@ -1,3 +1,7 @@
+/*  glcd.c
+    created by Ellen Fluehr
+ */
+
 #include <xc.h>
 
 #include "font.h"
@@ -9,7 +13,13 @@
 
 extern const char Tahoma19x21[];
 
-// Configures all the registers for the GLCD
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  configures all the registers for the GLCD
+ */
 void glcd_configRegisters(void){
     glcd_writeRegister(0x06, 0x0100);  // software reset
     glcd_writeRegister(0x04, 0x0000);  // power save config
@@ -36,6 +46,13 @@ void glcd_configRegisters(void){
     glcd_writeRegister(0x04, 0x0002);  // power save config
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  configures the touch controller
+ */
 int glcd_configTouch(void){
     const char DUMMY = 0;
     char startAddress;
@@ -77,6 +94,13 @@ int glcd_configTouch(void){
     return 1;
 }
 
+/* parameters
+ *  none
+ * return
+ *  touch data
+ * purpose
+ *  gets and parses a packet from the touch screen controller
+ */
 struct TouchData glcd_getTouch(void){
     static char lastPen;
     const char DUMMY = 0;
@@ -114,6 +138,13 @@ struct TouchData glcd_getTouch(void){
     return t;
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  initializes the glcd
+ */
 void glcd_init(void){
     //glcd_configTouch();
     spi_open(GRAPHIC);
@@ -122,6 +153,13 @@ void glcd_init(void){
     glcd_initLut1();
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  initializes the glcd's lookup table
+ */
 void glcd_initLut1(){
     const int DEVICE = GRAPHIC;
     long LUT_Address = 0x60000;
@@ -376,6 +414,15 @@ void glcd_initLut1(){
     spi_ss_lcd = 1;
 }
 
+/* parameters
+ *  r: the red value of the color
+ *  g: the green value of the color
+ *  b: the blue value of the color
+ * return
+ *  none
+ * purpose
+ *  initializes a color in the glcd's lookup table
+ */
 void glcd_initLutColor(char r, char g, char b){
     const int DEVICE = GRAPHIC;
     spi_exchange(DEVICE, b);	// blue
@@ -384,6 +431,17 @@ void glcd_initLutColor(char r, char g, char b){
     spi_exchange(DEVICE, 0x00);	// null
 }
 
+/* parameters
+ *  x: the x coordination of the upper left corner
+ *  y: the y coordinate of the upper left corner
+ *  color: the fill color of the box
+ *  width: the width of the box
+ *  height: the height of the box
+ * return
+ *  none
+ * purpose
+ *  draws a box of the specified size and position on the glcd
+ */
 void glcd_putBox(int x, int y, char color, int width, int height){
     int i;
     for (i = y; i < y+height; i++){
@@ -391,6 +449,16 @@ void glcd_putBox(int x, int y, char color, int width, int height){
     }
 }
 
+/* parameters
+ *  x: the x coordination of the lower left corner
+ *  y: the y coordinate of the lower left corner
+ *  color: the color of the text
+ *  c: the ascii character to draw
+ * return
+ *  how many horizontal pixels the character takes up
+ * purpose
+ *  draws a character on the glcd
+ */
 char glcd_putChar(int x, int y, char color, char c){
     char fontWidth = 19; // each character starts at index at 3*fontWidth + 1
     char fontHeight = 21;
@@ -414,10 +482,31 @@ char glcd_putChar(int x, int y, char color, char c){
     return width;
 }
 
+/* parameters
+ *  x: the start x coordinate
+ *  y: the start y coordinate
+ *  color: the pixel(s) color
+ *  length: how many consecutive pixels to draw
+ *  height: the height of the box
+ * return
+ *  none
+ * purpose
+ *  draws a pixel on the glcd
+ */
 void glcd_putPixel(int x, int y, char color, long length){
     glcd_writeVram((long)GLCD_WIDTH*y + x, color, length);
 }
 
+/* parameters
+ *  x: the x coordination of the lower left corner
+ *  y: the y coordinate of the lower left corner
+ *  color: the color of the text
+ *  c: the ascii characters to draw
+ * return
+ *  none
+ * purpose
+ *  draws characters on the glcd
+ */
 void glcd_putString(int x, int y, char color, char *c){
     char width;
     unsigned int i;
@@ -434,6 +523,14 @@ void glcd_putString(int x, int y, char color, char *c){
     }
 }
 
+/* parameters
+ *  offset: the number of the color to look up
+ *  length: how many consecutive bytes to read
+ * return
+ *  none
+ * purpose
+ *  read entries from the glcd's lookup table
+ */
 int glcd_readLut1(char offset, char length){
     const int DEVICE = GRAPHIC;
     const char DUMMY = 0;
@@ -459,6 +556,13 @@ int glcd_readLut1(char offset, char length){
     return 1;
 }
 
+/* parameters
+ *  length: how many consecutive bytes to read
+ * return
+ *  none
+ * purpose
+ *  read an entry from the touch controller's registers
+ */
 int glcd_readRegister(char offset){
     const int DEVICE = GRAPHIC;
     const char DUMMY = 0;
@@ -483,6 +587,13 @@ int glcd_readRegister(char offset){
     return result;
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  read entries from the touch controller's registers
+ */
 int glcd_readRegisters(void){
     int r4,r6,r10,r12,r14,r16,r20,r22,r24,r26,r28,r2a,r2c,r2e,r30,r32,r40,r42,r44;
     r4 = glcd_readRegister(0x04);
@@ -508,6 +619,14 @@ int glcd_readRegisters(void){
     return 1;
 }
 
+/* parameters
+ *  addr: the address to start reading at
+ *  length: how many consecutive bytes to read
+ * return
+ *  none
+ * purpose
+ *  read entries from the touch controller's vram
+ */
 int glcd_readVram(long addr, char length){
     const int DEVICE = GRAPHIC;
     const char DUMMY = 0;
@@ -534,13 +653,27 @@ int glcd_readVram(long addr, char length){
     return 1;
 }
 
+/* parameters
+ *  value: the value to write to the touch controller
+ * return
+ *  the value received from the touch controller
+ * purpose
+ *  performs an spi exchange with the touch controller
+ */
 char glcd_touchExchange(char value){
     char result = spi_exchange(TOUCH, value);
     __delay_us(400);
     return result;
 }
 
-// Writes to the registers of the GLCD
+/* parameters
+ *  offset: the offset of the register to write to
+ *  val: what to write
+ * return
+ *  none
+ * purpose
+ *  writes to a register of the touch controller
+ */
 void glcd_writeRegister(char offset, int val){
     const int DEVICE = GRAPHIC;
 
@@ -562,6 +695,15 @@ void glcd_writeRegister(char offset, int val){
 
 }
 
+/* parameters
+ *  addr: the address of the vram to write to
+ *  lut_offset: the offset of the lookup table entry that should be written to the vram
+ *  length: how many consecutive bytes to write to
+ * return
+ *  none
+ * purpose
+ *  writes to the vram of the touch controller
+ */
 void glcd_writeVram(long addr, char lut_offset, long length){
     const int DEVICE = GRAPHIC;
     long i;

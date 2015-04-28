@@ -1,5 +1,8 @@
+/*  screen_check.c
+    created by Ellen Fluehr
+ */
+
 // TODO: remove blank items
-// TODO: submit is more feedbacky, then returns home
 
 #include "include.h"
 
@@ -27,7 +30,13 @@ extern struct Button button_up;
 extern struct Button button_down;
 extern struct Button button_return;
 
-
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  replaces screen-specific objects with background color
+ */
 void screen_check_clear(void){
     struct Button *b;
     b = &button_itemA;
@@ -48,6 +57,13 @@ void screen_check_clear(void){
     glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  writes over text on item entries with button background color
+ */
 void screen_check_clearEntries(void){
     screen_check_drawEntry(&button_itemA, currentItemIndex, button_itemA.color);
     screen_check_drawEntry(&button_itemB, currentItemIndex+1, button_itemB.color);
@@ -55,6 +71,13 @@ void screen_check_clearEntries(void){
     screen_check_drawEntry(&button_itemD, currentItemIndex+3, button_itemD.color);
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  places screen-specific objects
+ */
 void screen_check_draw(void){
     currentItemIndex = 0;
     upEnabled = false;
@@ -69,6 +92,15 @@ void screen_check_draw(void){
     screen_drawButton(&button_return);
 }
 
+/* parameters
+ *  b: the button to draw on
+ *  index: the index of the current item in the menu
+ *  color: the text color to use
+ * return
+ *  none
+ * purpose
+ *  draws the text for the selected check entry
+ */
 void screen_check_drawEntry(struct Button *b, int index, int color){
     char buffer[6];
     if (index < check.length){
@@ -81,6 +113,13 @@ void screen_check_drawEntry(struct Button *b, int index, int color){
     }
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  draws the text for check entries
+ */
 void screen_check_drawEntries(void){
     screen_check_drawEntry(&button_itemA, currentItemIndex, WHITE);
     screen_check_drawEntry(&button_itemB, currentItemIndex+1, WHITE);
@@ -90,6 +129,13 @@ void screen_check_drawEntries(void){
     screen_check_updateUpDown();
 }
 
+/* parameters
+ *  color: the text color to use
+ * return
+ *  none
+ * purpose
+ *  draws the text for the running total price
+ */
 void screen_check_drawTotalPrice(int color){
     char price[9];
     price[0] = '$';
@@ -99,6 +145,13 @@ void screen_check_drawTotalPrice(int color){
     glcd_putString(b->x+110, b->y+b->height/2, color, price);
 }
 
+/* parameters
+ *  t: last touch data
+ * return
+ *  none
+ * purpose
+ *  responds to touch signals on screen-specific objects
+ */
 void screen_check_handleTouch(struct TouchData t){
     struct Button *b;
     unsigned int index;
@@ -212,6 +265,13 @@ void screen_check_handleTouch(struct TouchData t){
     }
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  assembles the packet with check contents to be sent through wifi
+ */
 void screen_check_preparePacket(void){
     unsigned int i;
 
@@ -223,6 +283,13 @@ void screen_check_preparePacket(void){
     packet[2*i] = '\0';
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  draws or erases the up/down scroll buttons depending on whether there are more items to view
+ */
 void screen_check_updateUpDown(void){
     if (check.length > (currentItemIndex + 4) && upEnabled == false){
 	// draw the up button

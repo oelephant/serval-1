@@ -1,3 +1,7 @@
+/*  screen_categories.c
+    created by Ellen Fluehr
+ */
+
 #include "include.h"
 
 #include "glcd.h"
@@ -15,6 +19,13 @@ struct Button button_cat4 = {325, 200, BTN_GRAD4_BG, 200, 80, "DESSERTS", WHITE}
 extern struct Button button_viewCheck;
 extern struct Button button_return;
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  replaces screen-specific objects with background color
+ */
 void screen_categories_clear(void){
     struct Button *b = &button_cat1;
     glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
@@ -30,6 +41,13 @@ void screen_categories_clear(void){
     glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
 }
 
+/* parameters
+ *  none
+ * return
+ *  none
+ * purpose
+ *  places screen-specific objects
+ */
 void screen_categories_draw(void){
     screen_drawButton(&button_cat1);
     screen_drawButton(&button_cat2);
@@ -39,6 +57,13 @@ void screen_categories_draw(void){
     screen_drawButton(&button_return);
 }
 
+/* parameters
+ *  t: last touch data
+ * return
+ *  none
+ * purpose
+ *  responds to touch signals on screen-specific objects
+ */
 void screen_categories_handleTouch(struct TouchData t){
     struct Button *b;
 

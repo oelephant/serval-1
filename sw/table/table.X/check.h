@@ -1,6 +1,6 @@
 /* 
  * File:   check.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on April 19, 2015, 7:39 PM
  */

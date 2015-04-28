@@ -1,6 +1,6 @@
 /* 
  * File:   screen_categories.h
- * Author: Tae
+ * Author: Ellen Fluehr
  *
  * Created on April 17, 2015, 2:34 PM
  */
