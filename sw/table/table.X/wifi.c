@@ -11,6 +11,8 @@
 #include "wifi.h"
 
 extern struct Check check;
+char wifi_resultPacket[0xff];
+int wifi_resultLength;
 
 /* parameters
  *  value: data to send to the wifi
@@ -30,6 +32,12 @@ char wifi_exchange(char value){
     return result;
 }
 
+void wifi_manageReceivedPacket(void){
+    if (wifi_resultPacket[0] == OP_REQ_ID_ACK){
+	check.id = wifi_resultPacket[1];
+    }
+}
+
 /* parameters
  *  none
  * return
@@ -37,16 +45,18 @@ char wifi_exchange(char value){
  * purpose
  *  submits a wifi request to page the server
  */
-char msg[280];
+//char msg[280];
 void wifi_pageServer(void){
-    int i;
-    //char msg[2];
-    //msg[0] = OP_PAGE_SERVER;
-    //msg[1] = TABLE_ID;
-    for (i = 0; i < 280; i++){
-	msg[i] = i%127 + 1;
-    }
-    wifi_transmit(msg, 280);
+    //int i;
+    char msg[2];
+    msg[0] = OP_PAGE_SERVER;
+    msg[1] = TABLE_ID;
+    wifi_transmit(msg, 2);
+    //for (i = 0; i < 280; i++){
+//	msg[i] = i%127 + 1;
+    //}
+    //wifi_transmit(msg, 280);
+    //wifi_transmit("paging", strlen("paging"));
 }
 
 /* parameters
@@ -58,14 +68,43 @@ void wifi_pageServer(void){
  */
 int wifi_read(){
     const char DUMMY = 0xff;
-    char result[30];
+    int msgLength;
+    char result;
     int i;
 
-    for (i = 0; i < 30; i++){
-	result[i] = wifi_exchange(DUMMY);
+    for (i = 0; i < 0xff; i++){
+	result = wifi_exchange(DUMMY);	// should be packet header, or keep checking until it is
+	if (result == PACKET_HEADER){
+	    break;
+	}
     }
-    Nop();
+    if (result == PACKET_HEADER){
+	msgLength = wifi_exchange(DUMMY);   // upper byte of message length
+	msgLength = msgLength << 8;
+	msgLength |= wifi_exchange(DUMMY);  // lower byte of message length
+    }
+    else{
+	return result;
+    }
+    wifi_resultLength = msgLength - 11;
+
+    for (i = 0; i < 11; i++){
+	wifi_exchange(DUMMY);	// 11 bytes of protocol;
+    }
+    for (i = 0; i < wifi_resultLength; i++){
+	wifi_resultPacket[i] = wifi_exchange(DUMMY);	// actual message
+    }
+    wifi_exchange(DUMMY);   // checksum
+    wifi_manageReceivedPacket();
+
     return 1;
+}
+
+void wifi_reqID(void){
+    char msg[2];
+    msg[0] = OP_REQ_ID;
+    msg[1] = TABLE_ID;
+    wifi_transmit(msg, 2);
 }
 
 /* parameters
@@ -158,9 +197,9 @@ void wifi_sendOrder(void){
     unsigned int i;
     char msg[2+check.length];
     msg[0] = OP_SEND_ORDER;
-    msg[1] = TABLE_ID;
+    msg[1] = check.id;
     for (i = 0; i < check.length; i++){
 	msg[i+2] = check.foods[i]->id;
     }
-    //wifi_transmit(msg, 2+check.length);
+    wifi_transmit(msg, 2+check.length);
 }

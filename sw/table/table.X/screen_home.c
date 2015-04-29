@@ -59,6 +59,7 @@ void screen_home_handleTouch(struct TouchData t){
 	b = &button_newOrder;
 	glcd_putBox(b->x, b->y, C5FAF5F, b->width, b->height);
 	check_reset();
+	wifi_reqID();
 	screen_draw(CATEGORIES, -1);
     }
     else if (screen_isWithinBounds(&t, &button_continueOrder)){

@@ -43,6 +43,7 @@ void check_addItem(struct Food *food){
  *  clears the check
  */
 void check_reset(void){
+    check.id = 0;
     check.length = 0;
     check.totalPrice = 0;
 }
