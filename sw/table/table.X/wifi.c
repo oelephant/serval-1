@@ -5,14 +5,16 @@
 #include "include.h"
 
 #include "check.h"
+#include "menu.h"
 #include "system.h"        /* System funct/params, like osc/peripheral config */
 #include "uc_pins.h"
 #include "spi_table.h"
 #include "wifi.h"
 
 extern struct Check check;
-char wifi_resultPacket[0xff];
+char wifi_resultPacket[0xfff];
 int wifi_resultLength;
+static int check_id = 1;
 
 /* parameters
  *  value: data to send to the wifi
@@ -33,9 +35,42 @@ char wifi_exchange(char value){
 }
 
 void wifi_manageReceivedPacket(void){
-    if (wifi_resultPacket[0] == OP_REQ_ID_ACK){
-	check.id = wifi_resultPacket[1];
+    unsigned int i;
+    unsigned char opcode = wifi_resultPacket[0];
+    char *newPointer;
+    char id[10];
+    char category[10];
+    char name[35];
+    char desc[120];
+    char price[10];
+    switch (opcode){
+	case (OP_REQ_ID_ACK):
+	    check.id = wifi_resultPacket[1];
+	    break;
+	case (OP_REQ_ITEMS_ACK):
+	    newPointer = wifi_resultPacket;
+	    for (i = 0; i < wifi_resultLength && i < 0xfff; i++){
+		newPointer = wifi_parse(id, newPointer, ';');
+		newPointer = wifi_parse(category, newPointer, ';');
+		newPointer = wifi_parse(name, newPointer, ';');
+		newPointer = wifi_parse(desc, newPointer, ';');
+		newPointer = wifi_parse(price, newPointer, ';');
+		menu_addItem(1, name, desc, 0, 1.00);
+	    }
+	    break;
     }
+    
+//    if (wifi_resultPacket[0] == OP_REQ_ID_ACK){
+//	check.id = wifi_resultPacket[1];
+//    }
+//    else if (wifi_resultPacket[0] == OP_REQ_ITEMS_ACK){
+//	wifi_parse(dummy, wifi_resultPacket, ';');
+//	wifi_parse(dummy, wifi_resultPacket, ';');
+//	wifi_parse(name, wifi_resultPacket, ';');
+//	wifi_parse(desc, wifi_resultPacket, ';');
+//	wifi_parse(dummy, wifi_resultPacket, ';');
+//	Nop();
+//    }
 }
 
 /* parameters
@@ -57,6 +92,15 @@ void wifi_pageServer(void){
     //}
     //wifi_transmit(msg, 280);
     //wifi_transmit("paging", strlen("paging"));
+}
+
+char * wifi_parse(char *buffer, char *string, char delimiter){
+    unsigned int i;
+    for (i = 0; i < 120 && string[i] != delimiter; i++){
+	buffer[i] = string[i];
+    }
+    buffer[i] = '\0';
+    return &string[i+1];
 }
 
 /* parameters
@@ -81,7 +125,7 @@ int wifi_read(){
     if (result == PACKET_HEADER){
 	msgLength = wifi_exchange(DUMMY);   // upper byte of message length
 	msgLength = msgLength << 8;
-	msgLength |= wifi_exchange(DUMMY);  // lower byte of message length
+	msgLength |= (0x0011 & wifi_exchange(DUMMY));  // lower byte of message length
     }
     else{
 	return result;
@@ -101,8 +145,17 @@ int wifi_read(){
 }
 
 void wifi_reqID(void){
-    char msg[2];
+    char msg[3];
     msg[0] = OP_REQ_ID;
+    msg[1] = check_id;
+    msg[2] = TABLE_ID;
+    wifi_transmit(msg, 3);
+    check_id++;
+}
+
+void wifi_reqItems(void){
+    char msg[2];
+    msg[0] = OP_REQ_ITEMS;
     msg[1] = TABLE_ID;
     wifi_transmit(msg, 2);
 }
@@ -197,7 +250,7 @@ void wifi_sendOrder(void){
     unsigned int i;
     char msg[2+check.length];
     msg[0] = OP_SEND_ORDER;
-    msg[1] = check.id;
+    msg[1] = TABLE_ID;
     for (i = 0; i < check.length; i++){
 	msg[i+2] = check.foods[i]->id;
     }

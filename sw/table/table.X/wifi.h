@@ -27,14 +27,16 @@
 
 #define TABLE_ID 1
 
-extern char wifi_resultPacket[0xff];
+extern char wifi_resultPacket[0xfff];
 extern int wifi_resultLength;
 
 char wifi_exchange(char value);
 void wifi_manageReceivedPacket(void);
 void wifi_pageServer(void);
+char * wifi_parse(char *buffer, char *string, char delimiter);
 int wifi_read();
 void wifi_reqID(void);
+void wifi_reqItems(void);
 int wifi_transmit(char *message, int messageLength);
 void wifi_sendOrder(void);
 

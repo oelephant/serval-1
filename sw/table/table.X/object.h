@@ -18,7 +18,7 @@ struct Button { int x; int y;
                 int width; int height;
                 char *text; char textColor;};
 
-struct Food {   int id; char* name; char* desc; int category; float price;};
+struct Food {   int id; char name[35]; char desc[120]; int category; float price;};
 
 struct Menu {   struct Food foods[20]; int length;};
 

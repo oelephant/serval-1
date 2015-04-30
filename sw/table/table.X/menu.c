@@ -6,6 +6,7 @@
 
 #include "menu.h"
 #include "object.h"
+#include "wifi.h"
 
 static struct Menu menu1, menu2, menu3, menu4;
 
@@ -40,8 +41,10 @@ void menu_addItem(int id, char* name, char* desc, int category, float price){
     }
 
     m->foods[m->length].id = id;
-    m->foods[m->length].name = name;
-    m->foods[m->length].desc = desc;
+    strcpy(m->foods[m->length].name, name);
+    //m->foods[m->length].name = name;
+    strcpy(m->foods[m->length].desc, desc);
+    //m->foods[m->length].desc = desc;
     m->foods[m->length].category = category;
     m->foods[m->length].price = price;
     m->length++;
@@ -77,18 +80,29 @@ struct Menu * menu_getRoot(int category){
  *  initializes the menu
  */
 void menu_init(void){
-    menu_addItem(1, "Toast", "is toasty and has quite a long description that needs to wrap around, perhaps even over as many as three lines", ENTREE, 11.12);
-    menu_addItem(2, "Eggs", "are eggy", ENTREE, 23.11);
-    menu_addItem(3, "Jam", "it's very jammy", ENTREE, 2.11);
-    menu_addItem(5, "Spider Goulash", "ndesc", ENTREE, 99.99);
-    menu_addItem(6, "Ramen", "ndesc", ENTREE, 99.99);
-    menu_addItem(7, "Shrimp Scampi", "ndesc", ENTREE, 99.99);
-    menu_addItem(13, "Oni Giri", "ndesc", ENTREE, 99.99);
-    menu_addItem(4, "Doughnuts", "are frosted", DESSERT, 99.99);
-    menu_addItem(9, "Napoleonas Torte", "ndesc", DESSERT, 99.99);
-    menu_addItem(12, "Pudding", "ndesc", DESSERT, 99.99);
-    menu_addItem(12, "ice cream", "ndesc", DESSERT, 11.99);
-    menu_addItem(10, "Shasta", "ndesc", DRINK, 99.99);
-    menu_addItem(11, "Cactus juice", "It's the quenchiest", DRINK, 99.99);
-    menu_addItem(8, "Spring Roll", "ndesc", APPETIZER, 99.99);
+    //wifi_reqItems();
+
+    menu_addItem(1, "Bacon Cheeseburger", "1/2 pound beef burger with fries and cole slaw", ENTREE, 7.99);
+    menu_addItem(2, "Sushi", "Twelve pieces of salmon, cucumber, and tuna sushi with the rice on the inside", ENTREE, 12.49);
+    menu_addItem(3, "Spanakopita", "Flaky pastry filled with spinach and four different cheeses", APPETIZER, 4.75);
+    menu_addItem(4, "Crab Rangoon", "Crunchy wonton with cream cheese and krab filling", APPETIZER, 3.75);
+    menu_addItem(5, "Coke", "", DRINK, 1.50);
+    menu_addItem(6, "Sprite", "", DRINK, 1.50);
+    menu_addItem(7, "Tang", "", DRINK, 1.50);
+    menu_addItem(8, "Napoleonas Torte", "Rich six-layer pastry with almond filling", DESSERT, 7.49);
+    menu_addItem(9, "Spumone", "Light and refreshing fruity ice cream", DESSERT, 4.99);
+//    menu_addItem(1, "Toast", "is toasty and has quite a long description that needs to wrap around, perhaps even over as many as three lines", ENTREE, 11.12);
+//    menu_addItem(2, "Eggs", "are eggy", ENTREE, 23.11);
+//    menu_addItem(3, "Jam", "it's very jammy", ENTREE, 2.11);
+//    menu_addItem(5, "Spider Goulash", "ndesc", ENTREE, 99.99);
+//    menu_addItem(6, "Ramen", "ndesc", ENTREE, 99.99);
+//    menu_addItem(7, "Shrimp Scampi", "ndesc", ENTREE, 99.99);
+//    menu_addItem(13, "Oni Giri", "ndesc", ENTREE, 99.99);
+//    menu_addItem(4, "Doughnuts", "are frosted", DESSERT, 99.99);
+//    menu_addItem(9, "Napoleonas Torte", "ndesc", DESSERT, 99.99);
+//    menu_addItem(12, "Pudding", "ndesc", DESSERT, 99.99);
+//    menu_addItem(12, "ice cream", "ndesc", DESSERT, 11.99);
+//    menu_addItem(10, "Shasta", "ndesc", DRINK, 99.99);
+//    menu_addItem(11, "Cactus juice", "It's the quenchiest", DRINK, 99.99);
+//    menu_addItem(8, "Spring Roll", "ndesc", APPETIZER, 99.99);
 }

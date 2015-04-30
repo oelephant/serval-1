@@ -10,6 +10,7 @@
 #include "include.h"
 
 #include "user.h"          /* User funct/params, such as InitApp              */
+#include "check.h"
 #include "glcd.h"
 #include "lut_colors.h"
 #include "menu.h"
@@ -19,8 +20,9 @@
 #include "uc_pins.h"
 #include "wifi.h"
 
-extern char wifi_resultPacket[0xff];
+extern char wifi_resultPacket[0xfff];
 extern int wifi_resultLength;
+static struct Menu *menu;
 
 void initTestOrder(void);
 void testOrder(void);
@@ -38,8 +40,8 @@ int main(void)
 
     __delay_ms(100);
     spi_init();
-    glcd_init();
     menu_init();
+    glcd_init();
 
     screen_drawBackground();
     screen_draw(HOME, -1);
@@ -51,25 +53,31 @@ int main(void)
 	else if (spi_int_wifi == 0){
 	    wifi_read();
 	}
-	else{
-	    //wifi_command();
-	}
     }
 }
 
 void initTestOrder(void){
+    __delay_ms(5000);
+   wifi_reqID();
+    __delay_ms(5000);
+   menu = menu_getRoot(ENTREE);
+   check_addItem(&menu->foods[1]);
+   check_addItem(&menu->foods[2]);
    ConfigIntTimer23(T23_INT_ON|T23_INT_PRIOR_1);/*Enable Interrupt*/
-   OpenTimer23(T23_ON,0x10000000);
-   while (1){   }
+   OpenTimer23(T23_ON,0x40000000);
+   while (1){   
+       if (spi_int_wifi == 0){
+	    wifi_read();
+       }
+   }
    CloseTimer23();
 
 }
 
 void testOrder(void){
-    wifi_reqID();
-    while (spi_int_wifi == 1);
-    wifi_read();
     wifi_sendOrder();
+    __delay_ms(5000);
+    wifi_reqID();
 }
 
 

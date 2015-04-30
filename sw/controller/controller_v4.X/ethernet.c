@@ -25,7 +25,6 @@ void ethernetClientConnect();
 char ethernetClientEstablished();
 void ethernetClientReceive(unsigned int receiveSize);
 void ethernetClientSend(unsigned int sendSize);
-void ethernetRaw();
 
 char msg[20];
 
@@ -84,7 +83,7 @@ char ethernetClientEstablished()
             ethernetClientReceive(receiveSize);
             ethernetFromServer();
         }
-/*
+
         // XBee stuff
         // ----------- TODO
         if (wifiRxAvailable()) {
@@ -95,7 +94,7 @@ char ethernetClientEstablished()
         }
 
         ethernetOpen();
-*/
+        
         // determine if data is ready for sending
         // ---------------------------------------
         Nop();
@@ -113,16 +112,16 @@ __delay_ms(100);
         // TODO find a better way...
         if(!disconAfter--)
             status = 2;
-        else if (disconAfter == 5) {
-            char msg[] = "asdf\n\n";
-            int i = 0;
-            txSize = 0;
-            for (i = 0; i < strlen(msg); i++) {
-                tx[i] = msg[i];
-                txSize++;
-            }
-            Nop();
-        }
+//        else if (disconAfter == 5) {
+//            char msg[] = "Get /php/checks.php?test HTTP/1.1\nHost: 68.227.174.223\n\n";
+//            int i = 0;
+//            txSize = 0;
+//            for (i = 0; i < strlen(msg); i++) {
+//                tx[i] = msg[i];
+//                txSize++;
+//            }
+//            Nop();
+//        }
 
         if (sr == W5100_SOCK_CLOSED)
             status = 3;
@@ -224,8 +223,7 @@ void ethernetClientReceive(unsigned int receiveSize)
 
 void ethernetClientConnect()
 {
-    //unsigned char ip[] = {68,227,174,223};
-    unsigned char ip[] = {192,168,1,148};
+    unsigned char ip[] = {68,227,174,223};
     unsigned char port[] = {0x1F, 0x90};
 
     ethernetWrite(W5100_S0_DIPR0, ip[0]);       // destination ip
