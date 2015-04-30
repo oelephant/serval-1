@@ -13,7 +13,7 @@
 #include "wifi.h"
 #include "menu.h"
 
-struct Button button_newOrder = {65, 150, C00FF5F, 250, 180, "NEW ORDER", WHITE};
+struct Button button_newOrder = {65, 150, C00FF5F, 510, 180, "NEW ORDER", WHITE};
 struct Button button_continueOrder = {325, 150, CAF005F, 250, 180, "CONTINUE ORDER", WHITE};
 extern struct Button button_page;
 extern struct Check check;
@@ -28,8 +28,8 @@ extern struct Check check;
 void screen_home_clear(void){
     struct Button *b = &button_newOrder;
     glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
-    b = &button_continueOrder;
-    glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
+//    b = &button_continueOrder;
+//    glcd_putBox(b->x, b->y, BACKGROUND, b->width, b->height);
 }
 
 /* parameters
@@ -42,7 +42,7 @@ void screen_home_clear(void){
 void screen_home_draw(void){
     screen_drawButton(&button_page);
     screen_drawButton(&button_newOrder);
-    screen_drawButton(&button_continueOrder);
+//    screen_drawButton(&button_continueOrder);
 }
 
 /* parameters
@@ -62,10 +62,10 @@ void screen_home_handleTouch(struct TouchData t){
 	wifi_reqID();
 	screen_draw(CATEGORIES, -1);
     }
-    else if (screen_isWithinBounds(&t, &button_continueOrder)){
-	b = &button_continueOrder;
-	glcd_putBox(b->x, b->y, C5F005F, b->width, b->height);
-	wifi_reqItems();
-	//screen_draw(NUMBERPAD, -1);
-    }
+//    else if (screen_isWithinBounds(&t, &button_continueOrder)){
+//	b = &button_continueOrder;
+//	glcd_putBox(b->x, b->y, C5F005F, b->width, b->height);
+//	wifi_reqItems();
+//	//screen_draw(NUMBERPAD, -1);
+//    }
 }

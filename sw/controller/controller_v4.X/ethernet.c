@@ -14,14 +14,19 @@
 #define W5100_S0_TX_BASE 0x4000
 #define W5100_S0_TX_MASK 0x1FFF
 
+unsigned char server_ip[] = {68,227,174,223};
+unsigned char server_port[] = {0x1F, 0x90};
+unsigned char printer_ip[] = {192,168,1,60};
+unsigned char printer_port[] = {0x23, 0x8c};    //9100
 
+char ethernetPrinter();
 void ethernetInit();
 void ethernetOpen();
 char ethernetRead(unsigned int addr);
 void ethernetWrite(unsigned int addr, char data);
 char ethernetClient();
 void ethernetClientOpen();
-void ethernetClientConnect();
+void ethernetClientConnect(unsigned char ip[4], unsigned char port[2]);
 char ethernetClientEstablished();
 void ethernetClientReceive(unsigned int receiveSize);
 void ethernetClientSend(unsigned int sendSize);
@@ -44,7 +49,7 @@ char ethernetClient()
     // attempt connection
     // -------------------
     
-    ethernetClientConnect();
+    ethernetClientConnect(printer_ip, printer_port);
     
     // check connection status
     // ------------------------
@@ -55,9 +60,51 @@ char ethernetClient()
 
     // if connection is established let the following mehtod handle protocol
     if (sr == W5100_SOCK_ESTABLISHED)
-        status = ethernetClientEstablished();
+        //status = ethernetClientEstablished();
+	ethernetPrinter();
 
     // timeout has occured from established (>0) or connection request (0)
+    return status;
+}
+
+char ethernetPrinter()
+{
+    char *c = "test";
+    char sr, status = 0;
+    int i;
+
+    lcdPrintChar('.');
+
+    do {
+        ethernetOpen();
+
+	__delay_ms(10000);
+	for (i = 0; i < strlen(c); i++){
+	    tx[i] = c[i];
+	}
+	tx[i] = '\n';
+	txSize = strlen(c) + 1;
+        // determine if data is ready for sending
+        // ---------------------------------------
+        Nop();
+        if (txSize != 0)
+            ethernetClientSend(txSize);
+__delay_ms(100);
+        // check for last ack, disconnect, or timeout
+        // -------------------------------------------
+
+        sr = ethernetRead(W5100_S0_SR);
+
+        if (sr == W5100_SOCK_CLOSE_WAIT)
+            status = 1;
+
+        if (sr == W5100_SOCK_CLOSED)
+            status = 3;
+
+        Nop();
+
+    } while (status == 0);
+
     return status;
 }
 
@@ -221,11 +268,8 @@ void ethernetClientReceive(unsigned int receiveSize)
     } while (ret != 0x00);
 }
 
-void ethernetClientConnect()
+void ethernetClientConnect(unsigned char ip[4], unsigned char port[2])
 {
-    unsigned char ip[] = {68,227,174,223};
-    unsigned char port[] = {0x1F, 0x90};
-
     ethernetWrite(W5100_S0_DIPR0, ip[0]);       // destination ip
     ethernetWrite(W5100_S0_DIPR1, ip[1]);
     ethernetWrite(W5100_S0_DIPR2, ip[2]);
