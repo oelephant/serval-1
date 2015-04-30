@@ -13,6 +13,26 @@
 
 static char transmitOpcode;
 
+void getPrintTasks(void){
+    char header[512];
+    char temp[100];
+    int i = 0;
+
+    txSize = 0;
+    strcpy(header,"Get /php/checks.php?checks_to_print");
+    strcat(header, " HTTP/1.1\nHost: 68.227.174.223\n\n");
+
+    txSize = strlen(header);
+    for (i = 0; i < txSize; i++) {
+	tx[i] = header[i];
+    }
+    rx[0] = 0;
+    rxSize = 0;
+
+    transmitOpcode = 0;
+    Nop();
+}
+
 void wifiFromTable()
 {
     unsigned char opcode;
@@ -132,7 +152,7 @@ void ethernetFromServer()
     rxSize = 0;
     rx[0] = 0;
     Nop();
-
+    return;
     wifiTransmit();
 
 }

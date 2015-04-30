@@ -8,6 +8,7 @@
 #ifndef SERVAL_H
 #define	SERVAL_H
 
+void getPrintTasks(void);
 void wifiFromTable();
 void ethernetFromServer();
 

@@ -33,7 +33,7 @@ void ethernetClientSend(unsigned int sendSize);
 
 char msg[20];
 
-char ethernetClient()
+char ethernetClient(int client)
 {
     unsigned char sr;
     char status = 0;
@@ -48,8 +48,13 @@ char ethernetClient()
 
     // attempt connection
     // -------------------
-    
-    ethernetClientConnect(printer_ip, printer_port);
+
+    if (client == 0){
+	ethernetClientConnect(server_ip, server_port);
+    }
+    else{
+	ethernetClientConnect(printer_ip, printer_port);
+    }
     
     // check connection status
     // ------------------------
@@ -60,8 +65,14 @@ char ethernetClient()
 
     // if connection is established let the following mehtod handle protocol
     if (sr == W5100_SOCK_ESTABLISHED)
-        //status = ethernetClientEstablished();
-	ethernetPrinter();
+    {
+	if (client == 0){
+	    status = ethernetClientEstablished();
+	}
+	else{
+	    status = ethernetPrinter();
+	}
+    }
 
     // timeout has occured from established (>0) or connection request (0)
     return status;
@@ -73,17 +84,31 @@ char ethernetPrinter()
     char sr, status = 0;
     int i;
 
-    lcdPrintChar('.');
+    lcdPrintChar('-');
+
+    for (i = 0; i < rxSize; i++) {
+	if (rx[i] == 0x0D && rx[i+1] == 0x0A && rx[i+2] == 0x0D && rx[i+3] == 0x0A) {
+	    i += 4;
+	    break;
+	}
+    }
+    txSize = 0;
+    for (;i < rxSize; i++) {
+        tx[txSize++] = rx[i];
+    }
+    tx[txSize++] = '\n';
+    if (txSize < 5){
+	txSize = 0;
+	tx[0] = 0;
+    }
+
+    rxSize = 0;
+    rx[0] = 0;
 
     do {
         ethernetOpen();
 
 	__delay_ms(10000);
-	for (i = 0; i < strlen(c); i++){
-	    tx[i] = c[i];
-	}
-	tx[i] = '\n';
-	txSize = strlen(c) + 1;
         // determine if data is ready for sending
         // ---------------------------------------
         Nop();
@@ -94,6 +119,8 @@ __delay_ms(100);
         // -------------------------------------------
 
         sr = ethernetRead(W5100_S0_SR);
+
+	return 0;
 
         if (sr == W5100_SOCK_CLOSE_WAIT)
             status = 1;
@@ -112,7 +139,8 @@ char ethernetClientEstablished()
 {
     unsigned int receiveSize = 0;
     char sr, ret, status = 0;
-    char disconAfter = 10;          // TODO find a better way...
+    char disconAfter = 20;          // TODO find a better way...
+    int heartbeat = 10;
 
     lcdPrintChar('.');
 
@@ -128,6 +156,7 @@ char ethernetClientEstablished()
 
         if (receiveSize != 0x0000) {
             ethernetClientReceive(receiveSize);
+	    return 4;
             ethernetFromServer();
         }
 
@@ -159,6 +188,9 @@ __delay_ms(100);
         // TODO find a better way...
         if(!disconAfter--)
             status = 2;
+
+	if(!heartbeat--)
+	    getPrintTasks();
 //        else if (disconAfter == 5) {
 //            char msg[] = "Get /php/checks.php?test HTTP/1.1\nHost: 68.227.174.223\n\n";
 //            int i = 0;

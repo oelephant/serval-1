@@ -36,7 +36,8 @@ int main()
     TRISGbits.TRISG7 = 1;
     
     while(1) {
-       ethernetClient();
+       if (ethernetClient(0) == 4)
+	    ethernetClient(1);
     }
     
     return 1;
