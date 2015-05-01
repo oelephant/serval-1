@@ -20,7 +20,7 @@ void getPrintTasks(void){
 
     txSize = 0;
     strcpy(header,"Get /php/checks.php?checks_to_print");
-    strcat(header, " HTTP/1.1\nHost: 68.227.174.223\n\n");
+    strcat(header, " HTTP/1.1\nHost: 192.168.1.123\n\n");
 
     txSize = strlen(header);
     for (i = 0; i < txSize; i++) {
@@ -62,7 +62,7 @@ void wifiFromTable()
 		}
 	    }
 	    strcat(header, "]}");
-            strcat(header, " HTTP/1.1\nHost: 68.227.174.223\n\n");
+            strcat(header, " HTTP/1.1\nHost: 192.168.1.123\n\n");
 
             txSize = strlen(header);
             for (i = 0; i < txSize; i++) {
@@ -80,7 +80,7 @@ void wifiFromTable()
             strcpy(header,"Get /php/staff.php?page_server=");
             sprintf(temp, "%d", rx[1]);
             strcat(header, temp);
-            strcat(header, " HTTP/1.1\nHost: 68.227.174.223\n\n");
+            strcat(header, " HTTP/1.1\nHost: 192.168.1.123\n\n");
 
             txSize = strlen(header);
             for (i = 0; i < txSize; i++) {
@@ -96,7 +96,7 @@ void wifiFromTable()
 	case REQUEST_ITEMS:
             txSize = 0;
             strcpy(header,"Get /php/menus.php?get_items");
-            strcat(header, " HTTP/1.1\nHost: 68.227.174.223\n\n");
+            strcat(header, " HTTP/1.1\nHost: 192.168.1.123\n\n");
 
             txSize = strlen(header);
             for (i = 0; i < txSize; i++) {
@@ -116,7 +116,7 @@ void wifiFromTable()
             strcat(header, "&table_id=");
             sprintf(temp, "%d", rx[2]);
             strcat(header, temp);
-            strcat(header, " HTTP/1.1\nHost: 68.227.174.223\n\n");
+            strcat(header, " HTTP/1.1\nHost: 192.168.1.123\n\n");
             
             txSize = strlen(header);
             for (i = 0; i < txSize; i++) {

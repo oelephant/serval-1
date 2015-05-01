@@ -247,12 +247,16 @@ int wifi_transmit(char *message, int messageLength){
  *  submits a wifi check
  */
 void wifi_sendOrder(void){
-    unsigned int i;
-    char msg[2+check.length];
+    unsigned int i,j,k;
+    char msg[2+check.totalLength];
     msg[0] = OP_SEND_ORDER;
     msg[1] = TABLE_ID;
+    k=0;
     for (i = 0; i < check.length; i++){
-	msg[i+2] = check.foods[i]->id;
+	for (j = 0; j < check.qty[i]; j++){
+	    msg[k+2] = check.foods[i]->id;
+	    k++;
+	}
     }
-    wifi_transmit(msg, 2+check.length);
+    wifi_transmit(msg, 2+check.totalLength);
 }

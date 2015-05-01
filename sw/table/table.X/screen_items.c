@@ -13,6 +13,7 @@
 #include "object.h"
 #include "screen.h"
 #include "screen_items.h"
+#include "stdio.h"
 #include "user.h"
 #include "wifi.h"
 
@@ -102,7 +103,8 @@ void screen_items_draw(int category){
 void screen_items_drawEntry(struct Button *b, int index, int color){
     char price[6];
     if (index < menu->length){
-	ftoa(menu->foods[index].price, price, 2);
+	//ftoa(menu->foods[index].price, price, 2);
+	sprintf(price, "%.2f", menu->foods[index].price);
 	glcd_putString(b->x+5, b->y+5, color, menu->foods[index].name);
 	glcd_putChar(b->x+420, b->y+5, color, '$');
 	glcd_putString(b->x+444, b->y+5, color, price);

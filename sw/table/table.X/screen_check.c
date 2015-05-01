@@ -12,6 +12,7 @@
 #include "object.h"
 #include "screen.h"
 #include "screen_check.h"
+#include "stdio.h"
 #include "user.h"
 #include "wifi.h"
 
@@ -105,10 +106,12 @@ void screen_check_drawEntry(struct Button *b, int index, int color){
     char buffer[6];
     if (index < check.length){
 	glcd_putString(b->x+5, b->y+5, color, check.foods[index]->name);
-	intToStr(check.qty[index], buffer, 0);
+	sprintf(buffer, "%d", check.qty[index]);
+	//intToStr(check.qty[index], buffer, 0);
 	glcd_putString(b->x+370, b->y+5, color, buffer);
 	glcd_putChar(b->x+420, b->y+5, color, '$');
-	ftoa(check.foods[index]->price, buffer, 2);
+	sprintf(buffer, "%.2f", check.foods[index]->price);
+	//ftoa(check.foods[index]->price, buffer, 2);
 	glcd_putString(b->x+444, b->y+5, color, buffer);
     }
 }
@@ -141,7 +144,8 @@ void screen_check_drawTotalPrice(int color){
     price[0] = '$';
     price[1] = ' ';
     struct Button *b = &button_submit;
-    ftoa(check.totalPrice, price+2, 2);
+    sprintf(price, "%.2f", check.totalPrice);
+    //ftoa(check.totalPrice, price+2, 2);
     glcd_putString(b->x+110, b->y+b->height/2, color, price);
 }
 
@@ -253,8 +257,8 @@ void screen_check_handleTouch(struct TouchData t){
 	screen_check_clear();
 	glcd_putString(200, 240, MAGENTA, "Order submitted!");
 	check_reset();
-	screen_check_preparePacket();
-	wifi_sendOrder();
+	//screen_check_preparePacket();
+	//wifi_sendOrder();
 	__delay_ms(2000);
 	screen_draw(HOME, 0);
     }

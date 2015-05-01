@@ -13,7 +13,7 @@
 #include "wifi.h"
 #include "menu.h"
 
-struct Button button_newOrder = {65, 150, C00FF5F, 510, 180, "NEW ORDER", WHITE};
+struct Button button_newOrder = {165, 150, C00FF5F, 310, 180, "NEW ORDER", WHITE};
 struct Button button_continueOrder = {325, 150, CAF005F, 250, 180, "CONTINUE ORDER", WHITE};
 extern struct Button button_page;
 extern struct Check check;

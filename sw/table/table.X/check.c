@@ -26,6 +26,7 @@ void check_addItem(struct Food *food){
 	if (check.foods[i]->id == food->id){
 	    check.qty[i]++;
 	    check.totalPrice += check.foods[i]->price;
+	    check.totalLength++;
 	    return;
 	}
     }
@@ -33,6 +34,7 @@ void check_addItem(struct Food *food){
     check.qty[i]++;
     check.totalPrice += check.foods[i]->price;
     check.length++;
+    check.totalLength++;
 }
 
 /* parameters
@@ -49,6 +51,7 @@ void check_reset(void){
     }
     check.id = 0;
     check.length = 0;
+    check.totalLength = 0;
     check.totalPrice = 0;
 }
 
@@ -74,6 +77,7 @@ void check_removeItem(struct Food *food){
 		    //check.foods[j] = NULL;
 		    //check.qty[j] = 0;
 		    check.length--;
+		    check.totalLength--;
 		}
 	    }
 	    return;

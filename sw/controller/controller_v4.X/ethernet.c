@@ -14,7 +14,8 @@
 #define W5100_S0_TX_BASE 0x4000
 #define W5100_S0_TX_MASK 0x1FFF
 
-unsigned char server_ip[] = {68,227,174,223};
+//unsigned char server_ip[] = {68,227,174,223};
+unsigned char server_ip[] = {192,168,1,123};
 unsigned char server_port[] = {0x1F, 0x90};
 unsigned char printer_ip[] = {192,168,1,60};
 unsigned char printer_port[] = {0x23, 0x8c};    //9100
